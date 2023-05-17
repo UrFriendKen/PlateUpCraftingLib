@@ -1,8 +1,6 @@
 ﻿using CraftingLib.Customs;
 using CraftingLib.GameDataObjects;
-using KitchenCraftingLibTest.Customs.ApplianceParts;
-using KitchenData;
-using KitchenLib.References;
+using KitchenCraftingLibTest.Customs.ApplianceRecipes;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,17 +16,9 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
         public override bool IsPurchasable => false;
         public override bool IsPurchasableAsUpgrade => false;
 
-        public override List<PartialAppliance.ApplianceRecipe> Recipes => new List<PartialAppliance.ApplianceRecipe>()
+        public override List<ApplianceRecipe> Recipes => new List<ApplianceRecipe>()
         {
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCastedGDO<AppliancePart, RedPart>(), 1 },
-                    { GDOUtils.GetCastedGDO<AppliancePart, YellowPart>(), 1 }
-                },
-                Result = GDOUtils.GetExistingGDO(ApplianceReferences.HobSafe) as Appliance
-            }
+            GDOUtils.GetCustomGameDataObject<TestStage2ToSafetyHob>().GameDataObject as ApplianceRecipe
         };
     }
 }

@@ -2,7 +2,7 @@
 using CraftingLib.Customs;
 using CraftingLib.GameDataObjects;
 using Kitchen;
-using KitchenCraftingLibTest.Customs.ApplianceParts;
+using KitchenCraftingLibTest.Customs.ApplianceRecipes;
 using KitchenData;
 using KitchenLib.References;
 using KitchenLib.Utils;
@@ -37,50 +37,10 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
             new CLockDurationDay()
         };
 
-        public override List<PartialAppliance.ApplianceRecipe> Recipes => new List<PartialAppliance.ApplianceRecipe>()
+        public override List<ApplianceRecipe> Recipes => new List<ApplianceRecipe>()
         {
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCustomGameDataObject<RedPart>().GameDataObject as AppliancePart, 2 }
-                },
-                RequireExactMatch = true,
-                Result = GDOUtils.GetCastedGDO<PartialAppliance, TestStage2>()
-            },
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCustomGameDataObject<RedPart>().GameDataObject as AppliancePart, 10 }
-                },
-                Result = GDOUtils.GetExistingGDO(ApplianceReferences.AffordableNeonSign1) as Appliance
-            },
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCustomGameDataObject<RedPart>().GameDataObject as AppliancePart, 5 }
-                },
-                Result = GDOUtils.GetExistingGDO(ApplianceReferences.AffordableNeonSign2) as Appliance
-            },
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCustomGameDataObject<RedPart>().GameDataObject as AppliancePart, 7 }
-                },
-                RequireExactMatch = true,
-                Result = GDOUtils.GetExistingGDO(ApplianceReferences.AffordableRoofLight) as Appliance
-            },
-            new PartialAppliance.ApplianceRecipe()
-            {
-                Parts = new Dictionary<AppliancePart, int>()
-                {
-                    { GDOUtils.GetCustomGameDataObject<RedPart>().GameDataObject as AppliancePart, 1 }
-                },
-                Result = GDOUtils.GetExistingGDO(ApplianceReferences.AffordableStockArt) as Appliance
-            },
+            GDOUtils.GetCustomGameDataObject<TestStage1ToNeon>().GameDataObject as ApplianceRecipe,
+            GDOUtils.GetCustomGameDataObject<TestStage1ToTestStage2>().GameDataObject as ApplianceRecipe
         };
     }
 }

@@ -1,6 +1,10 @@
-﻿using KitchenLib;
+﻿using Kitchen;
+using KitchenLib;
 using KitchenLib.Event;
+using KitchenLib.Utils;
 using KitchenMods;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,6 +25,15 @@ namespace CraftingLib
         // e.g. ">=1.1.3" current and all future
         // e.g. ">=1.1.3 <=1.2.3" for all from/until
 
+        public static AssetBundle Bundle;
+
+        public static readonly ViewType PartialApplianceInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:PartialApplianceInfo");
+
+        public static readonly Dictionary<string, string> GlobalLocalisationTexts = new Dictionary<string, string>()
+        {
+            { "PARTIAL_APPLIANCE_COMPLETABLE", "Recipe Completed" }
+        };
+
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
 
         protected override void OnInitialise()
@@ -34,9 +47,24 @@ namespace CraftingLib
 
         protected override void OnPostActivate(KitchenMods.Mod mod)
         {
+            // TODO: Uncomment the following if you have an asset bundle.
+            // TODO: Also, make sure to set EnableAssetBundleDeploy to 'true' in your ModName.csproj
+
+            //LogInfo("Attempting to load asset bundle...");
+            //Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
+            //LogInfo("Done loading asset bundle.");
+
+
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
+                Dictionary<string, string> baseGameTexts = args.gamedata.GlobalLocalisation.Text;
+                foreach (KeyValuePair<string, string> text in GlobalLocalisationTexts)
+                {
+                    if (baseGameTexts.ContainsKey(text.Key))
+                        continue;
+                    baseGameTexts.Add(text.Key, text.Value);
+                }
             };
         }
         #region Logging

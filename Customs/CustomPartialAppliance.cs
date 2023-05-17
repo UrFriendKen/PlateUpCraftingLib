@@ -2,6 +2,7 @@
 using KitchenData;
 using KitchenLib.Customs;
 using KitchenLib.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,12 +11,19 @@ namespace CraftingLib.Customs
 {
     public interface IPartialAppliance
     {
-        List<PartialAppliance.ApplianceRecipe> Recipes { get; }
+        List<ApplianceRecipe> Recipes { get; }
     }
 
     public abstract class CustomPartialAppliance : CustomAppliance, IPartialAppliance
     {
-        public virtual List<PartialAppliance.ApplianceRecipe> Recipes { get; protected set; } = new List<PartialAppliance.ApplianceRecipe>();
+        [Obsolete("Please set your Name in Info")]
+        public virtual string Name { get; protected set; } = "Partial Appliance";
+
+
+        [Obsolete("Please set your Description in Info")]
+        public virtual string Description { get; protected set; } = "For all your crafting needs";
+
+        public virtual List<ApplianceRecipe> Recipes { get; protected set; } = new List<ApplianceRecipe>();
 
         public override void Convert(GameData gameData, out GameDataObject gameDataObject)
         {

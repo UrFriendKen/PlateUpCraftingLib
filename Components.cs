@@ -5,6 +5,7 @@ using KitchenMods;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using static Kitchen.CApplianceInfo;
 
 namespace CraftingLib
 {
@@ -67,7 +68,7 @@ namespace CraftingLib
                     matchingConsumedPartCount++;
             }
             
-            foreach (PartialAppliance.ApplianceRecipe recipe in gdo.Recipes)
+            foreach (ApplianceRecipe recipe in gdo.Recipes)
             {
                 if (recipe.PartCount(partID) > matchingConsumedPartCount)
                     return true;
@@ -87,9 +88,20 @@ namespace CraftingLib
             return true;
         }
 
+        public bool IsComplete(EntityContext ctx, Entity e, out int index)
+        {
+            return PrivateIsComplete(ctx, e, out index, out _);
+        }
+
         public bool IsComplete(EntityContext ctx, Entity e, out Appliance result)
         {
-            result = null;
+            return PrivateIsComplete(ctx, e, out _, out result);
+        }
+
+        private bool PrivateIsComplete(EntityContext ctx, Entity e, out int index, out Appliance appliance)
+        {
+            index = -1;
+            appliance = null;
             if (!GameData.Main.TryGet(ID, out PartialAppliance gdo, warn_if_fail: true))
                 return false;
 
@@ -104,13 +116,16 @@ namespace CraftingLib
                 consumedParts.Add(consumedPart.ID);
             }
 
-            foreach (PartialAppliance.ApplianceRecipe recipe in gdo.Recipes.OrderByDescending(recipe => recipe.PartCount()))
+            int i = 0;
+            foreach (ApplianceRecipe recipe in gdo.Recipes.OrderByDescending(recipe => recipe.PartCount()))
             {
                 if (recipe.IsMatch(consumedParts))
                 {
-                    result = recipe.Result;
+                    index = i;
+                    appliance = recipe.Result;
                     return true;
                 }
+                i++;
             }
             return false;
         }
@@ -136,4 +151,20 @@ namespace CraftingLib
 
     public struct CLockDurationNight : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
     public struct CLockDurationDay : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
+
+    public struct CPartialApplianceInfo : IComponentData, IModComponent
+    {
+        public int ID;
+        public ApplianceInfoMode Mode;
+        public int Price;
+        public int RecipeIndex;
+    }
+
+    public struct CShowPartialApplianceInfo : IComponentData, IModComponent
+    {
+        public int ID;
+        public int Price;
+        public bool ShowPrice;
+        public int RecipeIndex;
+    }
 }

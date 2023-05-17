@@ -1,12 +1,12 @@
 ﻿using Kitchen;
 using KitchenCraftingLibTest.Customs.ApplianceParts;
+using KitchenCraftingLibTest.Customs.ApplianceRecipes;
 using KitchenCraftingLibTest.Customs.PartialAppliances;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenMods;
 using System.Linq;
 using System.Reflection;
-using Unity.Entities;
 using UnityEngine;
 
 // Namespace should have "Kitchen" in the beginning
@@ -26,13 +26,6 @@ namespace KitchenCraftingLibTest
         // e.g. ">=1.1.3" current and all future
         // e.g. ">=1.1.3 <=1.2.3" for all from/until
 
-        // Boolean constant whose value depends on whether you built with DEBUG or RELEASE mode, useful for testing
-#if DEBUG
-        public const bool DEBUG_MODE = true;
-#else
-        public const bool DEBUG_MODE = false;
-#endif
-
         public static AssetBundle Bundle;
 
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
@@ -50,6 +43,10 @@ namespace KitchenCraftingLibTest
             AddGameDataObject<RedProvider>();
             AddGameDataObject<YellowPart>();
             AddGameDataObject<YellowProvider>();
+
+            AddGameDataObject<TestStage1ToNeon>();
+            AddGameDataObject<TestStage1ToTestStage2>();
+            AddGameDataObject<TestStage2ToSafetyHob>();
             AddGameDataObject<TestStage1>();
             AddGameDataObject<TestStage2>();
 
@@ -58,9 +55,6 @@ namespace KitchenCraftingLibTest
 
         protected override void OnUpdate()
         {
-            EntityQuery empty = GetEntityQuery(new QueryHelper());
-
-            Main.LogError(empty.CalculateEntityCount());
         }
 
         protected override void OnPostActivate(KitchenMods.Mod mod)
