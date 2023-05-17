@@ -1,0 +1,8 @@
+TestStage1: 2030977974
+TestStage2: -210124754
+
+RedPart: 1227508399
+YellowPart: -549730186
+
+RedProvider: -1871049672
+YellowProvider: -1501642060
