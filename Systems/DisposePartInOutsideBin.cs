@@ -19,6 +19,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(holder.HeldItem, out Part))
                 return false;
+            if (Has<CNonDisposablePart>(holder.HeldItem))
+                return false;
             PartEntity = holder.HeldItem;
             return true;
         }

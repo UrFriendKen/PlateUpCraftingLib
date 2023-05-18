@@ -22,6 +22,11 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
                 Total = 3,
                 Remaining = 2
             },
+            new CSpecialAppliancePartStore()
+            {
+                SpecialStore = true,
+                SpecialRetrieve = false
+            },
             new CDestroyWhenDepleted()
         };
 

@@ -1,4 +1,5 @@
-﻿using CraftingLib.Customs;
+﻿using CraftingLib;
+using CraftingLib.Customs;
 using CraftingLib.GameDataObjects;
 using KitchenCraftingLibTest.Customs.ApplianceRecipes;
 using KitchenData;
@@ -16,6 +17,14 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
             scale: 1f, material: MaterialUtils.GetExistingMaterial("Metal - Copper"));
         public override bool IsPurchasable => false;
         public override bool IsPurchasableAsUpgrade => false;
+
+        public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
+        {
+            new CSpecialPartialAppliance()
+            {
+                SpecialDeposit = true
+            }
+        };
 
         public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
         {

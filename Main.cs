@@ -27,6 +27,7 @@ namespace CraftingLib
         public static AssetBundle Bundle;
 
         public static readonly ViewType PartialApplianceInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:PartialApplianceInfo");
+        public static readonly ViewType AppliancePartViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:AppliancePart");
 
         public static readonly Dictionary<string, string> GlobalLocalisationTexts = new Dictionary<string, string>()
         {

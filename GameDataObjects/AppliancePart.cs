@@ -1,4 +1,5 @@
 ﻿using KitchenData;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CraftingLib.GameDataObjects
@@ -10,8 +11,11 @@ namespace CraftingLib.GameDataObjects
 
         public GameObject Prefab { get; set; }
 
+        public List<IAppliancePartProperty> Properties;
+
         protected override void InitialiseDefaults()
         {
+            Properties = new List<IAppliancePartProperty>();
         }
 
         public override bool Localise(Locale locale, StringSubstitutor subs)
@@ -24,6 +28,24 @@ namespace CraftingLib.GameDataObjects
             Name = subs.Parse(basicInfo.Name);
             Description = subs.Parse(basicInfo.Description);
             return true;
+        }
+
+        public bool GetProperty<T>(out T result) where T : IAppliancePartProperty
+        {
+            result = default(T);
+            if (Properties == null)
+            {
+                return false;
+            }
+            foreach (IAppliancePartProperty property in Properties)
+            {
+                if (property is T val)
+                {
+                    result = val;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

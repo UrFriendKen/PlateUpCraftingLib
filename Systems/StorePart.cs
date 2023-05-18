@@ -21,6 +21,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(data.Target, out PartStore))
                 return false;
+            if (Require(data.Target, out CSpecialAppliancePartStore specialStore) && specialStore.SpecialStore)
+                return false;
             if (PartStore.IsFull)
                 return false;
             if (PartStore.IsInUse && PartStore.PartID != Part.ID)

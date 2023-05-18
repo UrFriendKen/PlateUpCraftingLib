@@ -15,19 +15,33 @@ namespace CraftingLib.Patches
 
         static GameObject _hiderContainer = null;
         static GameObject _partialApplianceInfoPrefab = null;
+        static GameObject _appliancePartPrefab = null;
 
         [HarmonyPatch(typeof(LocalViewRouter), "GetPrefab")]
         [HarmonyPrefix]
         static bool GetPrefab_Postfix(ref LocalViewRouter __instance, ref GameObject __result, ViewType view_type)
         {
+            if (_hiderContainer == null)
+            {
+                _hiderContainer = new GameObject("View Prefabs Hider");
+                _hiderContainer.SetActive(false);
+            }
+
+            if (view_type == Main.AppliancePartViewType)
+            {
+                if (_appliancePartPrefab == null)
+                {
+                    _appliancePartPrefab = new GameObject("Appliance Part");
+                    _appliancePartPrefab.transform.SetParent(_hiderContainer.transform);
+
+                    AppliancePartView appliancePartView = _appliancePartPrefab.AddComponent<AppliancePartView>();
+                }
+                __result = _appliancePartPrefab;
+                return false;
+            }
+
             if (view_type == Main.PartialApplianceInfoViewType)
             {
-                if (_hiderContainer == null)
-                {
-                    _hiderContainer = new GameObject("View Prefabs Hider");
-                    _hiderContainer.SetActive(false);
-                }
-
                 if (_partialApplianceInfoPrefab == null)
                 {
                     object obj = m_GetPrefab.Invoke(__instance, new object[] { ViewType.ApplianceInfo });

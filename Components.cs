@@ -10,11 +10,17 @@ using static Kitchen.CApplianceInfo;
 
 namespace CraftingLib
 {
+    public interface IAppliancePartProperty : IAttachableProperty, IComponentData { }
     public struct CAppliancePart : IComponentData, IModComponent
     {
         public int ID;
         public Entity Source;
     }
+    public struct CAttachAppliancePartProperties : IComponentData, IModComponent { }
+
+    public struct CNonDisposablePart : IAppliancePartProperty, IComponentData, IModComponent { }
+
+
 
     public struct CAppliancePartStore : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent
     {
@@ -38,7 +44,27 @@ namespace CraftingLib
     }
     public struct CDestroyWhenDepleted : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
 
-    public struct CPartialAppliance : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent
+    /// <summary>
+    /// Attach this to your Appliance Part Stores to prevent them from being acted on by store/retrieve part systems. Make your own InteractionSystem instead.
+    /// </summary>
+    public struct CSpecialAppliancePartStore : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent
+    {
+        /// <summary>
+        /// Prevent acting by CraftingLib.RetrievePart
+        /// </summary>
+        public bool SpecialRetrieve;
+        /// <summary>
+        /// Prevent acting by CraftingLib.StorePart
+        /// </summary>
+        public bool SpecialStore;
+    }
+
+
+
+
+
+
+    public struct CPartialAppliance : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent
     {
         public int ID;
 
@@ -82,7 +108,7 @@ namespace CraftingLib
             if (!NeedsPart(ctx, e, partID))
                 return false;
 
-            ctx.AppendToBuffer<CConsumedPart>(e, new CConsumedPart()
+            ctx.AppendToBuffer(e, new CConsumedPart()
             {
                 ID = partID
             });
@@ -130,6 +156,23 @@ namespace CraftingLib
             }
             return false;
         }
+
+        public void Attach(EntityManager em, EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent(e, this);
+            ecb.AddBuffer<CConsumedPart>(e);
+        }
+    }
+
+    /// <summary>
+    /// Attach this to your Partial Appliance to prevent them from being acted on by deposit part systems. Make your own InteractionSystem instead.
+    /// </summary>
+    public struct CSpecialPartialAppliance : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent
+    {
+        /// <summary>
+        /// Prevent acting by CraftingLib.DepositPart
+        /// </summary>
+        public bool SpecialDeposit;
     }
 
     [InternalBufferCapacity(5)]
@@ -152,7 +195,6 @@ namespace CraftingLib
 
     public struct CLockDurationNight : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
     public struct CLockDurationDay : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
-
     public struct CPartialApplianceInfo : IComponentData, IModComponent
     {
         public int ID;

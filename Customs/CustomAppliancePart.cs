@@ -1,6 +1,7 @@
 ﻿using CraftingLib.GameDataObjects;
 using KitchenData;
 using KitchenLib.Customs;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CraftingLib.Customs
@@ -10,6 +11,8 @@ namespace CraftingLib.Customs
         public override sealed int BaseGameDataObjectID => -1;
 
         public virtual GameObject Prefab { get; protected set; }
+
+        public virtual List<IAppliancePartProperty> Properties { get; protected set; } = new List<IAppliancePartProperty>();
 
         public virtual void SetupPrefab(GameObject prefab)
         {
@@ -51,6 +54,15 @@ namespace CraftingLib.Customs
                 }
             }
             gameDataObject = appliancePart;
+        }
+
+        public override void AttachDependentProperties(GameData gameData, GameDataObject gameDataObject)
+        {
+            AppliancePart appliancePart = (AppliancePart)gameDataObject;
+            if (appliancePart.Properties != Properties)
+            {
+                appliancePart.Properties = Properties;
+            }
         }
     }
 }
