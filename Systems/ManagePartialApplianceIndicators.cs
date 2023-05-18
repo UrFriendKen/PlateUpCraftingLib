@@ -61,7 +61,9 @@ namespace CraftingLib.Systems
                 ID = showInfo.ID,
                 Mode = ((!showInfo.ShowPrice) ? CApplianceInfo.ApplianceInfoMode.Garage : CApplianceInfo.ApplianceInfoMode.Shop),
                 Price = showInfo.Price,
-                RecipeIndex = showInfo.RecipeIndex
+                RecipeIndex = showInfo.RecipeIndex,
+                PartIDs = showInfo.PartIDs,
+                PartCount = showInfo.PartCount
             });
             return entity;
         }

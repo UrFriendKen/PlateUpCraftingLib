@@ -13,5 +13,17 @@ namespace CraftingLib.GameDataObjects
         protected override void InitialiseDefaults()
         {
         }
+
+        public override bool Localise(Locale locale, StringSubstitutor subs)
+        {
+            BasicInfo basicInfo = Info?.Get(locale);
+            if (basicInfo == null)
+            {
+                return false;
+            }
+            Name = subs.Parse(basicInfo.Name);
+            Description = subs.Parse(basicInfo.Description);
+            return true;
+        }
     }
 }

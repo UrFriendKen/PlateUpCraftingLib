@@ -3,10 +3,13 @@ using Kitchen;
 using KitchenData;
 using KitchenMods;
 using MessagePack;
+using System;
+using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 namespace CraftingLib.Views
@@ -36,13 +39,25 @@ namespace CraftingLib.Views
                 {
                     CLinkedView view = views[i];
                     CPartialApplianceInfo info = infos[i];
+
+                    Dictionary<int, int> consumedParts = new Dictionary<int, int>();
+                    for (int j = 0; j < info.PartIDs.Length; j++)
+                    {
+                        int partID = info.PartIDs[j];
+                        if (!consumedParts.ContainsKey(partID))
+                        {
+                            consumedParts[partID] = info.PartCount[j];
+                        }
+                    }
+
                     SendUpdate(view, new ViewData()
                     {
                         ID = info.ID,
                         PlayerMoney = money,
                         Mode = info.Mode,
                         Price = info.Price,
-                        CompletedRecipeIndex = info.RecipeIndex
+                        RecipeIndex = info.RecipeIndex, // Currrently unused
+                        ConsumedParts = consumedParts
                     });
                 }
             }
@@ -53,24 +68,38 @@ namespace CraftingLib.Views
         {
             [Key(0)] public int ID;
 
-            [Key(1)]
-            public int PlayerMoney;
+            [Key(1)] public int PlayerMoney;
 
-            [Key(2)]
-            public CApplianceInfo.ApplianceInfoMode Mode;
+            [Key(2)] public CApplianceInfo.ApplianceInfoMode Mode;
 
-            [Key(3)]
-            public int Price;
+            [Key(3)] public int Price;
 
-            [Key(4)]
-            public int CompletedRecipeIndex;
+            [Key(4)] public int RecipeIndex;
+
+            [Key(5)] public Dictionary<int, int> ConsumedParts;
 
             public bool IsChangedFrom(ViewData check)
             {
                 return ID != check.ID ||
                     PlayerMoney != check.PlayerMoney ||
                     Mode != check.Mode ||
-                    Price != check.Price;
+                    Price != check.Price ||
+                    RecipeIndex != check.RecipeIndex ||
+                    ConsumedPartsIsChangedFrom(check);
+            }
+
+            private bool ConsumedPartsIsChangedFrom(ViewData check)
+            {
+                if (ConsumedParts.Count != check.ConsumedParts.Count)
+                    return true;
+                foreach (KeyValuePair<int, int> parts in ConsumedParts)
+                {
+                    if (!check.ConsumedParts.TryGetValue(parts.Key, out int count))
+                        return true;
+                    if (parts.Value != count)
+                        return true;
+                }
+                return false;
             }
         }
 
@@ -99,7 +128,7 @@ namespace CraftingLib.Views
             sections.transform.localRotation = Sections.transform.localRotation;
             sections.transform.localScale = Sections.transform.localScale;
 
-            Object.Destroy(Sections);
+            UnityEngine.Object.Destroy(Sections);
             Sections = sections;
             if (!GameData.Main.TryGet(data.ID, out PartialAppliance gdo))
             {
@@ -130,9 +159,33 @@ namespace CraftingLib.Views
             {
                 yPos += AddTag(yPos, gdo.Tags[i]);
             }
-            for (int j = 0; j < gdo.Sections.Count; j++)
+            for (int i = 0; i < gdo.Sections.Count; i++)
             {
-                yPos += AddSection(yPos, gdo.Sections[j]);
+                yPos += AddSection(yPos, gdo.Sections[i]);
+            }
+            if (data.ConsumedParts.Count > 0)
+            {
+                List<string> partStrings = new List<string>();
+                foreach (KeyValuePair<int, int> part in data.ConsumedParts)
+                {
+                    string partName = $"{part.Key}"; // Part ID, as default value if gdo cannot be found
+                    if (GameData.Main.TryGet<AppliancePart>(part.Key, out AppliancePart partGDO))
+                    {
+                        partName = partGDO.Name;
+                    }
+                    partStrings.Add($"{partName} ({part.Value})");
+                }
+                string partsInsertedString = String.Join(", ", partStrings);
+                yPos += AddSection(yPos, new Appliance.Section()
+                {
+                    Title = "Parts Inserted",       // To populate GlobalLocalisation.Text
+                    Description = partsInsertedString
+                });
+            }
+            else
+            {
+                string consumedPartsTag = "No Parts Inserted";     // To populate GlobalLocalisation.Text
+                yPos += AddTag(yPos, consumedPartsTag);
             }
             if (gdo.HasUpgrades)
             {
@@ -179,7 +232,7 @@ namespace CraftingLib.Views
 
         private float AddTag(float offset, string tag)
         {
-            GameObject gameObject = Object.Instantiate(TemplateTag, Sections.transform, worldPositionStays: true);
+            GameObject gameObject = UnityEngine.Object.Instantiate(TemplateTag, Sections.transform, worldPositionStays: true);
             gameObject.SetActive(value: true);
             gameObject.transform.localPosition = new Vector3(0f, offset, 0f);
             gameObject.transform.Find("Text").GetComponent<TextMeshPro>().text = tag;
@@ -188,7 +241,7 @@ namespace CraftingLib.Views
 
         private float AddSection(float offset, Appliance.Section details, bool centre = false)
         {
-            GameObject gameObject = Object.Instantiate(TemplateInfo, Sections.transform, worldPositionStays: true);
+            GameObject gameObject = UnityEngine.Object.Instantiate(TemplateInfo, Sections.transform, worldPositionStays: true);
             gameObject.SetActive(value: true);
             gameObject.transform.localPosition = new Vector3(0f, offset, 0f);
             gameObject.transform.Find("Title").GetComponent<TextMeshPro>().text = details.Title;

@@ -1,8 +1,6 @@
 ﻿using CraftingLib.GameDataObjects;
-using Kitchen;
 using KitchenData;
 using KitchenLib.Customs;
-using System;
 using UnityEngine;
 
 namespace CraftingLib.Customs
@@ -31,6 +29,14 @@ namespace CraftingLib.Customs
             if (appliancePart.Info != Info)
             {
                 appliancePart.Info = Info;
+            }
+            if (InfoList.Count > 0)
+            {
+                appliancePart.Info = new LocalisationObject<BasicInfo>();
+                foreach (var info in InfoList)
+                {
+                    appliancePart.Info.Add(info.Item1, info.Item2);
+                }
             }
             if (appliancePart.Info == null)
             {

@@ -4,6 +4,7 @@ using KitchenData;
 using KitchenMods;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using Unity.Entities;
 using static Kitchen.CApplianceInfo;
 
@@ -158,6 +159,8 @@ namespace CraftingLib
         public ApplianceInfoMode Mode;
         public int Price;
         public int RecipeIndex;
+        public FixedListInt128 PartIDs;
+        public FixedListInt128 PartCount;
     }
 
     public struct CShowPartialApplianceInfo : IComponentData, IModComponent
@@ -166,5 +169,7 @@ namespace CraftingLib
         public int Price;
         public bool ShowPrice;
         public int RecipeIndex;
+        public FixedListInt128 PartIDs;
+        public FixedListInt128 PartCount;
     }
 }
