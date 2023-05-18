@@ -24,5 +24,22 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
             },
             new CDestroyWhenDepleted()
         };
+
+        public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
+        {
+            (Locale.English, new ApplianceInfo()
+            {
+                Name = "Yellow Provider",
+                Description = "This is a part provider",
+                Sections = new List<Appliance.Section>()
+                {
+                    new Appliance.Section()
+                    {
+                        Title = "Yellow",
+                        Description = "Gives Yellow Parts. Starts with 2 parts."
+                    }
+                }
+            })
+        };
     }
 }

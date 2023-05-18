@@ -37,6 +37,28 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
             new CLockDurationDay()
         };
 
+        public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
+        {
+            (Locale.English, new ApplianceInfo()
+            {
+                Name = "Test Stage 1",
+                Description = "This is a Partial Appliance",
+                Sections = new List<Appliance.Section>()
+                {
+                    new Appliance.Section()
+                    {
+                        Title = "To Test Stage 2",
+                        Description = "Insert 1 Red Part and 1 Yellow Part"
+                    },
+                    new Appliance.Section()
+                    {
+                        Title = "To Neon Sign",
+                        Description = "Insert 4 Red Parts"
+                    }
+                }
+            })
+        };
+
         public override List<ApplianceRecipe> Recipes => new List<ApplianceRecipe>()
         {
             GDOUtils.GetCustomGameDataObject<TestStage1ToNeon>().GameDataObject as ApplianceRecipe,

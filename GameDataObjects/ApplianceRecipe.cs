@@ -16,8 +16,8 @@ namespace CraftingLib.GameDataObjects
         public string Name = "Appliance Recipe";
         public string Description = "Even I don't know the parts needed...";
         public string FlavourText = string.Empty;
-        public string MissingPartsTitle = "Add More Parts";
-        public string RecipeCompletedBody = string.Empty;
+        //public string MissingPartsTitle = "Add More Parts";
+        //public string RecipeCompletedBody = string.Empty;
 
         public ApplianceRecipe() { }
 
@@ -65,8 +65,8 @@ namespace CraftingLib.GameDataObjects
             Name = subs.Parse(applianceRecipeInfo.Name);
             Description = subs.Parse(applianceRecipeInfo.Description);
             FlavourText = subs.Parse(applianceRecipeInfo.FlavourText);
-            MissingPartsTitle = subs.Parse(applianceRecipeInfo.MissingPartsTitle);
-            RecipeCompletedBody = subs.Parse(applianceRecipeInfo.RecipeCompletedBody);
+            //MissingPartsTitle = subs.Parse(applianceRecipeInfo.MissingPartsTitle);
+            //RecipeCompletedBody = subs.Parse(applianceRecipeInfo.RecipeCompletedBody);
             return true;
         }
     }

@@ -20,15 +20,15 @@ namespace CraftingLib.GameDataObjects
         /// </summary>
         public string FlavourText;
 
-        /// <summary>
-        /// Title of section in pinged info for next available non-hidden recipe.
-        /// </summary>
-        public string MissingPartsTitle;
+        ///// <summary>
+        ///// Title of section in pinged info for next available non-hidden recipe.
+        ///// </summary>
+        //public string MissingPartsTitle;
 
-        /// <summary>
-        /// Body of section in pinged info for notifying action to be taken and/or completed recipe result.
-        /// </summary>
-        public string RecipeCompletedBody;
+        ///// <summary>
+        ///// Body of section in pinged info for notifying action to be taken and/or completed recipe result.
+        ///// </summary>
+        //public string RecipeCompletedBody;
 
         public override void Export(LocalisationContext context)
         {
@@ -36,8 +36,8 @@ namespace CraftingLib.GameDataObjects
             context.Add("NAME", Name);
             context.Add("DESCRIPTION", Description);
             context.Add("FLAVOUR", FlavourText);
-            context.Add("MISSING", MissingPartsTitle);
-            context.Add("COMPLETED_BODY", RecipeCompletedBody);
+            //context.Add("MISSING", MissingPartsTitle);
+            //context.Add("COMPLETED_BODY", RecipeCompletedBody);
         }
 
         public override void Import(LocalisationContext context)
@@ -46,8 +46,8 @@ namespace CraftingLib.GameDataObjects
             Name = context.Get("NAME");
             Description = context.Get("DESCRIPTION");
             Description = context.Get("FLAVOUR");
-            MissingPartsTitle = context.Get("MISSING");
-            RecipeCompletedBody = context.Get("COMPLETED_BODY");
+            //MissingPartsTitle = context.Get("MISSING");
+            //RecipeCompletedBody = context.Get("COMPLETED_BODY");
         }
     }
 }

@@ -23,5 +23,23 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
                 Remaining = 0
             }
         };
+
+        public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
+        {
+            (Locale.English, new ApplianceInfo()
+            {
+                Name = "Red Provider",
+                Description = "This is a part provider",
+                Sections = new List<Appliance.Section>()
+                {
+                    new Appliance.Section()
+                    {
+                        Title = "Red",
+                        Description = "Gives Red Parts"
+                    }
+                },
+                Tags = new List<string>() { "Infinite" }
+            })
+        };
     }
 }

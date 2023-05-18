@@ -72,8 +72,8 @@ namespace CraftingLib.Customs
                         Name = "Appliance Recipe",
                         Description = "Even I don't know the parts needed...",
                         FlavourText = string.Empty,
-                        MissingPartsTitle = "Add More Parts",
-                        RecipeCompletedBody = string.Empty
+                        //MissingPartsTitle = "Add More Parts",
+                        //RecipeCompletedBody = string.Empty
                     });
                 }
             }
@@ -95,10 +95,10 @@ namespace CraftingLib.Customs
             {
                 applianceRecipe.Parts = Parts;
             }
-            if (applianceRecipe.RecipeCompletedBody.IsNullOrEmpty() && applianceRecipe.Result != null)
-            {
-                applianceRecipe.RecipeCompletedBody = $"Interact to craft{(IsResultHidden? "" : $" {applianceRecipe.Result.Name}")}";
-            }
+            //if (applianceRecipe.RecipeCompletedBody.IsNullOrEmpty() && applianceRecipe.Result != null)
+            //{
+            //    applianceRecipe.RecipeCompletedBody = $"Interact to craft{(IsResultHidden? "" : $" {applianceRecipe.Result.Name}")}";
+            //}
         }
     }
 }
