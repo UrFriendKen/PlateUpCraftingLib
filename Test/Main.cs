@@ -22,11 +22,6 @@ namespace KitchenCraftingLibTest
         public const string MOD_VERSION = "0.1.0";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
-        // Game version this mod is designed for in semver
-        // e.g. ">=1.1.3" current and all future
-        // e.g. ">=1.1.3 <=1.2.3" for all from/until
-
-        public static AssetBundle Bundle;
 
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
 
@@ -59,13 +54,6 @@ namespace KitchenCraftingLibTest
 
         protected override void OnPostActivate(KitchenMods.Mod mod)
         {
-            // TODO: Uncomment the following if you have an asset bundle.
-            // TODO: Also, make sure to set EnableAssetBundleDeploy to 'true' in your ModName.csproj
-
-            LogInfo("Attempting to load asset bundle...");
-            Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
-            LogInfo("Done loading asset bundle.");
-
             // Register custom GDOs
             AddGameData();
 

@@ -19,7 +19,7 @@ namespace CraftingLib.Patches
 
         [HarmonyPatch(typeof(LocalViewRouter), "GetPrefab")]
         [HarmonyPrefix]
-        static bool GetPrefab_Postfix(ref LocalViewRouter __instance, ref GameObject __result, ViewType view_type)
+        static bool GetPrefab_Prefix(ref LocalViewRouter __instance, ref GameObject __result, ViewType view_type)
         {
             if (_hiderContainer == null)
             {

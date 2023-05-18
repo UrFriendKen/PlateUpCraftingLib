@@ -6,6 +6,7 @@ using KitchenData;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using TestCubes;
 
 namespace KitchenCraftingLibTest.Customs.PartialAppliances
 {
@@ -14,7 +15,7 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
         public override string UniqueNameID => "testStage2";
 
         public override GameObject Prefab => TestCubeManager.GetPrefab<TestStage2>(
-            scale: 1f, material: MaterialUtils.GetExistingMaterial("Metal - Copper"));
+            scaleY: 0.8f, material: MaterialUtils.GetExistingMaterial("Metal - Copper"));
         public override bool IsPurchasable => false;
         public override bool IsPurchasableAsUpgrade => false;
 

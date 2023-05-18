@@ -4,6 +4,7 @@ using KitchenLib.Customs;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using TestCubes;
 
 namespace KitchenCraftingLibTest.Customs.ApplianceParts
 {
@@ -12,7 +13,7 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
         public override string UniqueNameID => "redProvider";
 
         public override GameObject Prefab => TestCubeManager.GetPrefab<RedProvider>(
-            scale: 0.8f, material: MaterialUtils.GetExistingMaterial("Plastic - Red"));
+            scaleX: 0.8f, scaleY: 0.8f, scaleZ: 0.8f, material: MaterialUtils.GetExistingMaterial("Plastic - Red"));
 
         public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
         {
