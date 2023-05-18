@@ -27,16 +27,7 @@ namespace CraftingLib.Systems
 
         protected override void Perform(ref InteractionData data)
         {
-            Main.LogInfo("DisposePartInOutsideBin Perform");
-            if (Part.Source != default)
-            {
-                if (data.Context.Require(Part.Source, out CAppliancePartStore sourcePartStore)
-                    && !sourcePartStore.IsInfinite && sourcePartStore.Remaining > 0)
-                {
-                    sourcePartStore.Remaining--;
-                    data.Context.Set(Part.Source, sourcePartStore);
-                }
-            }
+            Part.Consume(data.Context);
             data.Context.Destroy(PartEntity);
             data.Context.Set(data.Interactor, default(CItemHolder));
         }

@@ -8,13 +8,13 @@ using Unity.Entities;
 namespace CraftingLib.Systems
 {
     [UpdateInGroup(typeof(CreationGroup))]
-    public class AttachAppliancePartProperties : GenericSystemBase, IModSystem
+    public class AddAppliancePartProperties : GenericSystemBase, IModSystem
     {
         EntityQuery Attaches;
         protected override void Initialise()
         {
             base.Initialise();
-            Attaches = GetEntityQuery(typeof(CAppliancePart), typeof(CAttachAppliancePartProperties));
+            Attaches = GetEntityQuery(typeof(CAppliancePart), typeof(CAddAppliancePartProperties));
         }
 
         protected override void OnUpdate()
@@ -26,7 +26,7 @@ namespace CraftingLib.Systems
             {
                 Entity entity = entities[i];
                 CAppliancePart part = parts[i];
-                EntityManager.RemoveComponent<CAttachAppliancePartProperties>(entity);
+                EntityManager.RemoveComponent<CAddAppliancePartProperties>(entity);
 
                 if (GameData.Main.TryGet(part.ID, out AppliancePart partGDO, warn_if_fail: true))
                 {

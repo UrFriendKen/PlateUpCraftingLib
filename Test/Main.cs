@@ -1,9 +1,12 @@
-﻿using Kitchen;
+﻿using CraftingLib;
+using Kitchen;
 using KitchenCraftingLibTest.Customs.ApplianceParts;
 using KitchenCraftingLibTest.Customs.ApplianceRecipes;
 using KitchenCraftingLibTest.Customs.PartialAppliances;
+using KitchenData;
 using KitchenLib;
 using KitchenLib.Event;
+using KitchenLib.References;
 using KitchenMods;
 using System.Linq;
 using System.Reflection;
@@ -60,6 +63,14 @@ namespace KitchenCraftingLibTest
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
+                if (args.gamedata.TryGet(ApplianceReferences.Grabber, out Appliance grabber))
+                {
+                    if (!grabber.GetProperty(out CPartAttachmentPoint _))
+                        grabber.Properties.Add(new CPartAttachmentPoint()
+                        {
+                            MaxAttachmentCount = 5
+                        });
+                }
             };
         }
         #region Logging

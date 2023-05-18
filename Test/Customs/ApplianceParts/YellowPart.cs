@@ -1,10 +1,10 @@
-﻿using CraftingLib;
-using CraftingLib.Customs;
+﻿using CraftingLib.Customs;
 using CraftingLib.GameDataObjects;
+using KitchenData;
 using KitchenLib.Utils;
 using System.Collections.Generic;
-using UnityEngine;
 using TestCubes;
+using UnityEngine;
 
 namespace KitchenCraftingLibTest.Customs.ApplianceParts
 {
@@ -12,12 +12,18 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
     {
         public override string UniqueNameID => "yellowPart";
 
+        public override bool IsWithdrawable => true;
+
         public override GameObject Prefab => TestCubeManager.GetPrefab<YellowPart>(
             scaleX: 0.3f, scaleY: 0.3f, scaleZ: 0.3f, material: MaterialUtils.GetExistingMaterial("Plastic - Yellow"));
 
-        public override List<IAppliancePartProperty> Properties => new List<IAppliancePartProperty>()
+        public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>()
         {
-            new CNonDisposablePart()
+            (Locale.English, new BasicInfo()
+            {
+                Name = "Yellow Part",
+                Description = "What did you think it was?"
+            })
         };
 
         public override void OnRegister(AppliancePart gameDataObject)

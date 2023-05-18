@@ -133,7 +133,7 @@ namespace CraftingLib.Views
             if (!GameData.Main.TryGet(data.ID, out PartialAppliance gdo))
             {
                 Title.text = $"Partial Appliance ({data.ID})";
-                Description.text = "Oopsie! PartialAppliance GDO not found.";
+                Description.text = "Oopsie! PartAttachmentPoint GDO not found.";
                 return;
             }
             float yPos = SectionStartOffset;

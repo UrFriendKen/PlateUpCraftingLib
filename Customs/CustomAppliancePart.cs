@@ -2,6 +2,7 @@
 using KitchenData;
 using KitchenLib.Customs;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 
 namespace CraftingLib.Customs
@@ -13,6 +14,18 @@ namespace CraftingLib.Customs
         public virtual GameObject Prefab { get; protected set; }
 
         public virtual List<IAppliancePartProperty> Properties { get; protected set; } = new List<IAppliancePartProperty>();
+
+        public virtual bool IsWithdrawable { get; protected set; }
+
+        public virtual bool IsAttachable { get; protected set; }
+
+        public virtual bool IsDetachable { get; protected set; }
+
+        public virtual HashSet<Appliance> AttachableAppliances { get; protected set; } = new HashSet<Appliance>();
+
+        public virtual List<IComponentData> ComponentsAddWhenAttached { get; protected set; } = new List<IComponentData>();
+
+        public virtual List<IComponentData> ComponentsAddWhenDetached { get; protected set; } = new List<IComponentData>();
 
         public virtual void SetupPrefab(GameObject prefab)
         {
@@ -32,6 +45,18 @@ namespace CraftingLib.Customs
             if (appliancePart.Info != Info)
             {
                 appliancePart.Info = Info;
+            }
+            if (appliancePart.IsWithdrawable != IsWithdrawable)
+            {
+                appliancePart.IsWithdrawable = IsWithdrawable;
+            }
+            if (appliancePart.IsAttachable != IsAttachable)
+            {
+                appliancePart.IsAttachable = IsAttachable;
+            }
+            if (appliancePart.IsDetachable != IsDetachable)
+            {
+                appliancePart.IsDetachable = IsDetachable;
             }
             if (InfoList.Count > 0)
             {
@@ -62,6 +87,18 @@ namespace CraftingLib.Customs
             if (appliancePart.Properties != Properties)
             {
                 appliancePart.Properties = Properties;
+            }
+            if (appliancePart.AttachableToAppliances != AttachableAppliances)
+            {
+                appliancePart.AttachableToAppliances = AttachableAppliances;
+            }
+            if (appliancePart.ComponentsAddWhenAttached != ComponentsAddWhenAttached)
+            {
+                appliancePart.ComponentsAddWhenAttached = ComponentsAddWhenAttached;
+            }
+            if (appliancePart.ComponentsAddWhenDetached != ComponentsAddWhenDetached)
+            {
+                appliancePart.ComponentsAddWhenDetached = ComponentsAddWhenDetached;
             }
         }
     }

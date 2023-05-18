@@ -1,5 +1,7 @@
-﻿using KitchenData;
+﻿using Kitchen;
+using KitchenData;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 
 namespace CraftingLib.GameDataObjects
@@ -13,9 +15,24 @@ namespace CraftingLib.GameDataObjects
 
         public List<IAppliancePartProperty> Properties;
 
+        public bool IsWithdrawable;
+
+        public bool IsAttachable;
+
+        public bool IsDetachable;
+
+        public HashSet<Appliance> AttachableToAppliances;
+
+        public List<IComponentData> ComponentsAddWhenAttached;
+
+        public List<IComponentData> ComponentsAddWhenDetached;
+
         protected override void InitialiseDefaults()
         {
             Properties = new List<IAppliancePartProperty>();
+            AttachableToAppliances = new HashSet<Appliance>();
+            ComponentsAddWhenAttached = new List<IComponentData>();
+            ComponentsAddWhenDetached = new List<IComponentData>();
         }
 
         public override bool Localise(Locale locale, StringSubstitutor subs)
@@ -46,6 +63,17 @@ namespace CraftingLib.GameDataObjects
                 }
             }
             return false;
+        }
+
+        public bool IsAttachableTo(int applianceID)
+        {
+            if (!IsAttachable)
+                return false;
+            if (!GameData.Main.TryGet<Appliance>(applianceID, out Appliance appliance))
+                return false;
+            if (!AttachableToAppliances.Contains(appliance))
+                return false;
+            return true;
         }
     }
 }

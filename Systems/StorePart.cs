@@ -32,27 +32,15 @@ namespace CraftingLib.Systems
 
         protected override void Perform(ref InteractionData data)
         {
-            if (Part.Source != default)
+            bool isReturn = data.Target == Part.Source;
+            Part.Consume(data.Context, isReturn);
+            if (!isReturn)
             {
-                if (data.Target == Part.Source)
-                {
-                    data.Context.Destroy(Holder.HeldItem);
-                    data.Context.Set(data.Interactor, default(CItemHolder));
-                    return;
-                }
-
-                if (data.Context.Require(Part.Source, out CAppliancePartStore sourcePartStore)
-                    && !sourcePartStore.IsInfinite && sourcePartStore.Remaining > 0)
-                {
-                    sourcePartStore.Remaining--;
-                    data.Context.Set(Part.Source, sourcePartStore);
-                }
+                PartStore.PartID = Part.ID;
+                if (!PartStore.IsInfinite)
+                    PartStore.Remaining++;
+                data.Context.Set(data.Target, PartStore);
             }
-
-            PartStore.PartID = Part.ID;
-            if (!PartStore.IsInfinite)
-                PartStore.Remaining++;
-            data.Context.Set(data.Target, PartStore);
 
             data.Context.Destroy(Holder.HeldItem);
             data.Context.Set(data.Interactor, default(CItemHolder));

@@ -25,7 +25,7 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
             },
             new CSpecialAppliancePartStore()
             {
-                SpecialStore = true,
+                SpecialStore = false,
                 SpecialRetrieve = false
             },
             new CDestroyWhenDepleted()

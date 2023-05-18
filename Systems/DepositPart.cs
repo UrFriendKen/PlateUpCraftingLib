@@ -10,6 +10,7 @@ namespace CraftingLib.Systems
         private CPartialAppliance PartialAppliance;
         private CAppliancePart Part;
         private Entity PartEntity;
+        private bool IsReturn;
 
         protected override bool AllowActOrGrab => true;
 
@@ -25,7 +26,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(holder.HeldItem, out Part))
                 return false;
-            if (!PartialAppliance.NeedsPart(data.Context, data.Target, Part.ID))
+            IsReturn = Part.Source == data.Target;
+            if (!IsReturn && !PartialAppliance.NeedsPart(data.Context, data.Target, Part.ID))
                 return false;
             PartEntity = holder.HeldItem;
             return true;
@@ -33,16 +35,8 @@ namespace CraftingLib.Systems
 
         protected override void Perform(ref InteractionData data)
         {
-            PartialAppliance.DepositPart(data.Context, data.Target, Part.ID);
-            if (Part.Source != default)
-            {
-                if (data.Context.Require(Part.Source, out CAppliancePartStore sourcePartStore)
-                    && !sourcePartStore.IsInfinite && sourcePartStore.Remaining > 0)
-                {
-                    sourcePartStore.Remaining--;
-                    data.Context.Set(Part.Source, sourcePartStore);
-                }
-            }
+            PartialAppliance.DepositPart(data.Context, data.Target, Part);
+            Part.Consume(data.Context, IsReturn);
             data.Context.Destroy(PartEntity);
             data.Context.Set(data.Interactor, default(CItemHolder));
         }
