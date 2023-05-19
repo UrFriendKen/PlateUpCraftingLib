@@ -19,6 +19,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(Holder.HeldItem, out Part))
                 return false;
+            if (Has<CNonStorablePart>())
+                return false;
             if (!Require(data.Target, out PartStore))
                 return false;
             if (Require(data.Target, out CSpecialAppliancePartStore specialStore) && specialStore.SpecialStore)

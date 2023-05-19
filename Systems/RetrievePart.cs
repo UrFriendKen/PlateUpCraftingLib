@@ -1,5 +1,7 @@
-﻿using CraftingLib.Utils;
+﻿using CraftingLib.GameDataObjects;
+using CraftingLib.Utils;
 using Kitchen;
+using KitchenData;
 using KitchenMods;
 using Unity.Entities;
 
@@ -17,6 +19,10 @@ namespace CraftingLib.Systems
             if (!Require(data.Interactor, out CItemHolder holder) || holder.HeldItem != default)
                 return false;
             if (!Require(data.Target, out Store) || !Store.IsInUse)
+                return false;
+            if (!GameData.Main.TryGet(Store.PartID, out AppliancePart partGDO, warn_if_fail: true))
+                return false;
+            if (partGDO.IsNonRetrievable)
                 return false;
             if (Require(data.Target, out CSpecialAppliancePartStore specialStore) && specialStore.SpecialRetrieve)
                 return false;

@@ -104,6 +104,19 @@ namespace CraftingLib
     }
     public struct CAddAppliancePartProperties : IComponentData, IModComponent { }
 
+    /// <summary>
+    /// Attach this to your Appliance Part to prevent it from being acted on by CraftingLib.StorePart system. Make your own InteractionSystem instead.
+    /// </summary>
+    public struct CNonStorablePart : IAppliancePartProperty, IComponentData, IModComponent { }
+    /// <summary>
+    /// Attach this to your Appliance Part to prevent it from being acted on by CraftingLib.DepositPart system. Make your own InteractionSystem instead.
+    /// </summary>
+    public struct CNonDepositablePart : IAppliancePartProperty, IComponentData, IModComponent { }
+    /// <summary>
+    /// Attaching this to your Appliance Part allows it to be acted on by CraftingLib.AttachPart system. Otherwise, make your own InteractionSystem instead.
+    /// </summary>
+    public struct CAttachablePart : IAppliancePartProperty, IComponentData, IModComponent { }
+
     public struct CNonDisposablePart : IAppliancePartProperty, IComponentData, IModComponent { }
 
     public struct CAppliancePartSource : IComponentData, IModComponent

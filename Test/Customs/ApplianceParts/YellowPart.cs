@@ -12,10 +12,10 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
     {
         public override string UniqueNameID => "yellowPart";
 
-        public override bool IsWithdrawable => true;
-
         public override GameObject Prefab => TestCubeManager.GetPrefab<YellowPart>(
             scaleX: 0.3f, scaleY: 0.3f, scaleZ: 0.3f, material: MaterialUtils.GetExistingMaterial("Plastic - Yellow"));
+
+        public override bool IsWithdrawable => true;
 
         public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>()
         {

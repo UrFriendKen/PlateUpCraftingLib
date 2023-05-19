@@ -3,7 +3,6 @@ using CraftingLib.Utils;
 using Kitchen;
 using KitchenData;
 using KitchenMods;
-using System.Collections.Generic;
 using Unity.Entities;
 
 namespace CraftingLib.Systems

@@ -26,6 +26,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(holder.HeldItem, out Part))
                 return false;
+            if (Has<CNonDepositablePart>(holder.HeldItem))
+                return false;
             IsReturn = Part.Source == data.Target;
             if (!IsReturn && !PartialAppliance.NeedsPart(data.Context, data.Target, Part.ID))
                 return false;

@@ -30,11 +30,11 @@ namespace KitchenCraftingLibTest.Customs.ApplianceParts
 
         public override List<IAppliancePartProperty> Properties => new List<IAppliancePartProperty>()
         {
+            new CAttachablePart(),
             new CNonDisposablePart()
         };
-        public override bool IsDetachable => true;
 
-        public override bool IsAttachable => true;
+        public override bool IsDetachable => true;
 
         public override HashSet<Appliance> AttachableAppliances => new HashSet<Appliance>()
         {

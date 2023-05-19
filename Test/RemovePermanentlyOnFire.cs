@@ -12,7 +12,7 @@ namespace KitchenCraftingLibTest
         {
             base.Initialise();
             PermanentFires = GetEntityQuery(new QueryHelper()
-                .All(typeof(CPermanentlyOnFire), typeof(CRemovePermanentlyOnFire)));
+                .All(typeof(CRemovePermanentlyOnFire)));
         }
 
         protected override void OnUpdate()
@@ -20,7 +20,8 @@ namespace KitchenCraftingLibTest
             using NativeArray<Entity> entities = PermanentFires.ToEntityArray(Allocator.Temp);
             foreach (Entity e in entities)
             {
-                EntityManager.RemoveComponent<CPermanentlyOnFire>(e);
+                if (Has<CPermanentlyOnFire>(e))
+                    EntityManager.RemoveComponent<CPermanentlyOnFire>(e);
                 EntityManager.RemoveComponent<CRemovePermanentlyOnFire>(e);
             }
         }

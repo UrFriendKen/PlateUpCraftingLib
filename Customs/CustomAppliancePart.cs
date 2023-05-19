@@ -15,10 +15,22 @@ namespace CraftingLib.Customs
 
         public virtual List<IAppliancePartProperty> Properties { get; protected set; } = new List<IAppliancePartProperty>();
 
+        /// <summary>
+        /// Setting to true prevents Appliance Part being retrieved from Appliance Part Stores using CraftingLib.RetrievePart system.
+        /// Set to false want to use the base Appliance Part Store behavior.
+        /// </summary>
+        public virtual bool IsNonRetrievable { get; protected set; }
+
+        /// <summary>
+        /// Setting to true allows withdrawing Appliance Part from Partial Appliances using CraftingLib.WithdrawPart system.
+        /// Set to false if you do not want the part to be withdrawable, or want to make your own withdrawal system.
+        /// </summary>
         public virtual bool IsWithdrawable { get; protected set; }
 
-        public virtual bool IsAttachable { get; protected set; }
-
+        /// <summary>
+        /// Setting to true allows detaching Appliance Part from Attachable Appliances using CraftingLib.DetachPart system.
+        /// Set to false if you do not want the part to be detachable, or want to make your own detach system.
+        /// </summary>
         public virtual bool IsDetachable { get; protected set; }
 
         public virtual HashSet<Appliance> AttachableAppliances { get; protected set; } = new HashSet<Appliance>();
@@ -46,13 +58,13 @@ namespace CraftingLib.Customs
             {
                 appliancePart.Info = Info;
             }
+            if (appliancePart.IsNonRetrievable != IsNonRetrievable)
+            {
+                appliancePart.IsNonRetrievable = IsNonRetrievable;
+            }
             if (appliancePart.IsWithdrawable != IsWithdrawable)
             {
                 appliancePart.IsWithdrawable = IsWithdrawable;
-            }
-            if (appliancePart.IsAttachable != IsAttachable)
-            {
-                appliancePart.IsAttachable = IsAttachable;
             }
             if (appliancePart.IsDetachable != IsDetachable)
             {

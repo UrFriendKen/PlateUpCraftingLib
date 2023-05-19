@@ -15,9 +15,9 @@ namespace CraftingLib.GameDataObjects
 
         public List<IAppliancePartProperty> Properties;
 
-        public bool IsWithdrawable;
+        public bool IsNonRetrievable;
 
-        public bool IsAttachable;
+        public bool IsWithdrawable;
 
         public bool IsDetachable;
 
@@ -67,8 +67,6 @@ namespace CraftingLib.GameDataObjects
 
         public bool IsAttachableTo(int applianceID)
         {
-            if (!IsAttachable)
-                return false;
             if (!GameData.Main.TryGet<Appliance>(applianceID, out Appliance appliance))
                 return false;
             if (!AttachableToAppliances.Contains(appliance))

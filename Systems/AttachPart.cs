@@ -31,6 +31,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(holder.HeldItem, out Part))
                 return false;
+            if (!Has<CAttachablePart>())
+                return false;
             if (!GameData.Main.TryGet(Part.ID, out AppliancePart partGDO, warn_if_fail: true))
                 return false;
             if (!partGDO.IsAttachableTo(applianceID))
@@ -53,7 +55,6 @@ namespace CraftingLib.Systems
 
             foreach (IComponentData comp in ComponentsToAdd)
             {
-                Main.LogInfo(comp);
                 data.Context.Set(data.Target, (dynamic)comp);
             }
         }
