@@ -209,6 +209,20 @@ namespace CraftingLib.Customs
             {
                 partialAppliance.Properties.Add(new CPartialAppliance(gameDataObject.ID));
             }
+            else
+            {
+                for (int i = 0; i < partialAppliance.Properties.Count; i++)
+                {
+                    if (partialAppliance.Properties[i] is CPartialAppliance partialApplianceComp)
+                    {
+                        if (partialApplianceComp.ID != gameDataObject.ID)
+                        {
+                            partialAppliance.Properties[i] = new CPartialAppliance(gameDataObject.ID);
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
 }

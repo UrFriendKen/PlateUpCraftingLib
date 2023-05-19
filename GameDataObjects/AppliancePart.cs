@@ -1,5 +1,4 @@
-﻿using Kitchen;
-using KitchenData;
+﻿using KitchenData;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
@@ -26,6 +25,8 @@ namespace CraftingLib.GameDataObjects
         public List<IComponentData> ComponentsAddWhenAttached;
 
         public List<IComponentData> ComponentsAddWhenDetached;
+
+        public int PurchaseCost;
 
         protected override void InitialiseDefaults()
         {

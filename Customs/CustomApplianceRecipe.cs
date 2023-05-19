@@ -9,6 +9,8 @@ namespace CraftingLib.Customs
 {
     public abstract class CustomApplianceRecipe : CustomLocalisedGameDataObject<ApplianceRecipe, ApplianceRecipeInfo>
     {
+        public override sealed int BaseGameDataObjectID => -1;
+
         /// <summary>
         /// Dictionary containing quantity of each required AppliancePart.
         /// </summary>
