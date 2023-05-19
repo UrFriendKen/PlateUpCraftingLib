@@ -1,29 +1,42 @@
-﻿using KitchenData;
+﻿using Kitchen;
+using KitchenData;
 using KitchenLib.Customs;
+using KitchenLib.References;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using TestCubes;
 using UnityEngine;
-using Kitchen;
-using CraftingLib;
 
-namespace CraftingLibParts.Customs.VendingMachine
+namespace CraftingLib.Customs.VendingMachine
 {
-    public class BasicPartsVendingMachine : CustomAppliance
+    public class VendingMachine : CustomAppliance
     {
-        public override string UniqueNameID => "basicPartsVendingMachine";
+        public override string UniqueNameID => "vendingMachine";
 
-        public override GameObject Prefab => TestCubeManager.GetPrefab<BasicPartsVendingMachine>(
+        public override GameObject Prefab => TestCubeManager.GetPrefab<VendingMachine>(
             scaleX: 0.85f, scaleZ: 0.5f, material: MaterialUtils.GetExistingMaterial("Plastic - Dark Green"));
 
         public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
         {
-            new CPartsVendor(),
+            new CAppliancePartVendor(),
             new CImmovable(),
             new CFixedRotation(),
             new CDestroyApplianceAtDay()
             {
                 HideBin = true
+            },
+            new CTakesDuration()
+            {
+                Total = 3f,
+                Manual = true,
+                ManualNeedsEmptyHands = true,
+                Mode = InteractionMode.Appliances
+            },
+            new CDisplayDuration()
+            {
+                Process = ProcessReferences.Purchase,
+                ShowWhenEmpty = false,
+                IsBad = false
             }
         };
 

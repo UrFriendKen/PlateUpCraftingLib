@@ -1,4 +1,5 @@
-﻿using Kitchen;
+﻿using CraftingLib.Customs.VendingMachine;
+using Kitchen;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenLib.Utils;
@@ -27,6 +28,7 @@ namespace CraftingLib
         public static AssetBundle Bundle;
 
         public static readonly ViewType PartialApplianceInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:PartialApplianceInfo");
+        public static readonly ViewType AppliancePartInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:AppliancePartInfo");
         public static readonly ViewType AppliancePartViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:AppliancePart");
 
         public static readonly Dictionary<string, string> GlobalLocalisationTexts = new Dictionary<string, string>()
@@ -54,6 +56,7 @@ namespace CraftingLib
             //Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
             //LogInfo("Done loading asset bundle.");
 
+            AddGameDataObject<VendingMachine>();
 
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)

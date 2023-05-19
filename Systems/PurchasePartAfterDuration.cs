@@ -1,11 +1,10 @@
-﻿using CraftingLib;
-using CraftingLib.Utils;
+﻿using CraftingLib.Utils;
 using Kitchen;
 using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace CraftingLibParts.Customs.VendingMachine
+namespace CraftingLib.Systems
 {
     public class PurchasePartAfterDuration : GenericSystemBase, IModSystem
     {
@@ -14,14 +13,15 @@ namespace CraftingLibParts.Customs.VendingMachine
         {
             base.Initialise();
             Vendors = GetEntityQuery(new QueryHelper()
-                .All(typeof(CPartsVendor), typeof(CTakesDuration), typeof(CBeingActedOnBy)));
+                .All(typeof(CAppliancePartVendor), typeof(CTakesDuration), typeof(CBeingActedOnBy))
+                .None(typeof(CVendorLocked)));
         }
 
         protected override void OnUpdate()
         {
             EntityContext ctx = new EntityContext(EntityManager);
             using NativeArray<Entity> entities = Vendors.ToEntityArray(Allocator.Temp);
-            using NativeArray<CPartsVendor> vendors = Vendors.ToComponentDataArray<CPartsVendor>(Allocator.Temp);
+            using NativeArray<CAppliancePartVendor> vendors = Vendors.ToComponentDataArray<CAppliancePartVendor>(Allocator.Temp);
             using NativeArray<CTakesDuration> durations = Vendors.ToComponentDataArray<CTakesDuration>(Allocator.Temp);
 
             SMoney player_money = GetOrDefault<SMoney>();
@@ -29,21 +29,28 @@ namespace CraftingLibParts.Customs.VendingMachine
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
-                CPartsVendor vendor = vendors[i];
+                CAppliancePartVendor vendor = vendors[i];
                 CTakesDuration duration = durations[i];
-
                 if (!duration.Active || duration.Remaining > 0f)
                     continue;
                 if (!ctx.RequireBuffer(entity, out DynamicBuffer<CBeingActedOnBy> actors) || actors.IsEmpty)
+                    continue;
+                if (!RequireBuffer(entity, out DynamicBuffer<CVendorOption> optionsBuffer))
+                    continue;
+                if (vendor.SelectedIndex > -1 && vendor.SelectedIndex > optionsBuffer.Length - 1)
+                    continue;
+                CVendorOption selectedOption = optionsBuffer[vendor.SelectedIndex];
+                int cost = selectedOption.PurchaseCost < 0 ? 0 : selectedOption.PurchaseCost;
+                if (cost > player_money)
                     continue;
 
                 for (int j = 0; j < actors.Length; j++)
                 {
                     Entity interactor = actors[i].Interactor;
-                    if (actors[i].IsTransferOnly || !Require(interactor, out CItemHolder holder) || holder.HeldItem != default || vendor.Cost > player_money)
+                    if (actors[i].IsTransferOnly || !Require(interactor, out CItemHolder holder) || holder.HeldItem != default)
                         continue;
-                    AppliancePartHelpers.CreateAppliancePart(ctx, vendor.PartID, default, CAppliancePartSource.SourceType.None, interactor, out Entity _);
-                    player_money.Amount -= vendor.Cost;
+                    AppliancePartHelpers.CreateAppliancePart(ctx, entity, CAppliancePartSource.SourceType.Vendor, interactor, out Entity _);
+                    player_money.Amount -= cost;
                     Set(player_money);
                     break;
                 }

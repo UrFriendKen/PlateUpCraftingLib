@@ -1,5 +1,4 @@
-﻿using CraftingLibParts.Customs.VendingMachine;
-using KitchenLib;
+﻿using KitchenLib;
 using KitchenLib.Event;
 using KitchenMods;
 using System.Reflection;
@@ -37,8 +36,6 @@ namespace CraftingLibParts
 
             AddGameDataObject<BasicParts.Iron>();
             AddGameDataObject<BasicParts.Gold>();
-
-            AddGameDataObject<BasicPartsVendingMachine>();
 
             LogInfo("Done loading game data.");
         }

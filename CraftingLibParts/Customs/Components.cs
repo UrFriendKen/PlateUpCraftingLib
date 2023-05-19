@@ -11,5 +11,4 @@ namespace CraftingLibParts.Customs
     }
 
     public struct CLockedVendor : IComponentData, IModComponent { }
-    public struct CIsInitialized : IComponentData, IModComponent { }
 }

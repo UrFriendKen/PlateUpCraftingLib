@@ -5,30 +5,29 @@ using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
-    public class ClearTemporaryPartialApplianceInfo : GenericSystemBase, IModSystem
+    public class ClearTemporaryInfos : GenericSystemBase, IModSystem
     {
-        EntityQuery PartialApplianceInfos;
+        EntityQuery Infos;
 
         protected override void Initialise()
         {
             base.Initialise();
-            PartialApplianceInfos = GetEntityQuery(new QueryHelper()
-                .All(typeof(CTemporaryApplianceInfo), typeof(CShowPartialApplianceInfo)));
+            Infos = GetEntityQuery(new QueryHelper()
+                .All(typeof(CTemporaryApplianceInfo))
+                .Any(typeof(CShowPartialApplianceInfo), typeof(CShowAppliancePartVendorInfo)));
         }
 
         protected override void OnUpdate()
         {
             float dt = Time.DeltaTime;
 
-            using NativeArray<Entity> entities = PartialApplianceInfos.ToEntityArray(Allocator.Temp);
-            using NativeArray<CTemporaryApplianceInfo> lifetimes = PartialApplianceInfos.ToComponentDataArray<CTemporaryApplianceInfo>(Allocator.Temp);
-            using NativeArray<CShowPartialApplianceInfo> infos = PartialApplianceInfos.ToComponentDataArray<CShowPartialApplianceInfo>(Allocator.Temp);
+            using NativeArray<Entity> entities = Infos.ToEntityArray(Allocator.Temp);
+            using NativeArray<CTemporaryApplianceInfo> lifetimes = Infos.ToComponentDataArray<CTemporaryApplianceInfo>(Allocator.Temp);
 
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
                 CTemporaryApplianceInfo lifetime = lifetimes[i];
-                CShowPartialApplianceInfo info = infos[i];
 
                 if (Has<CBeingLookedAt>(entity))
                 {
@@ -40,7 +39,10 @@ namespace CraftingLib.Systems
                 if (lifetime.RemainingLifetime < 0f)
                 {
                     EntityManager.RemoveComponent<CTemporaryApplianceInfo>(entity);
-                    EntityManager.RemoveComponent<CShowPartialApplianceInfo>(entity);
+                    if (Has<CShowPartialApplianceInfo>(entity))
+                        EntityManager.RemoveComponent<CShowPartialApplianceInfo>(entity);
+                    if (Has<CShowAppliancePartVendorInfo>(entity))
+                        EntityManager.RemoveComponent<CShowAppliancePartVendorInfo>(entity);
                 }
                 else
                 {

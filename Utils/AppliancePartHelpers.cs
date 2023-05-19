@@ -36,7 +36,7 @@ namespace CraftingLib.Utils
                 Main.LogError("\"source\" does not have CAppliancePartSource component");
                 return false;
             }
-            if (sourceComp.Type != sourceType)
+            if (!sourceComp.Type.HasFlag(sourceType))
             {
                 Main.LogError("CAppliancePartSource.Type does not match given \"sourceType\"");
                 return false;
@@ -57,6 +57,24 @@ namespace CraftingLib.Utils
                     store.HeldCount++;
                     ctx.Set(source, store);
                     break;
+                case CAppliancePartSource.SourceType.Vendor:
+                    if (!ctx.Require(source, out CAppliancePartVendor vendor))
+                    {
+                        Main.LogError("\"source\" does not have CAppliancePartVendor component");
+                        return false;
+                    }
+                    if (!ctx.RequireBuffer(source, out DynamicBuffer<CVendorOption> optionsBuffer))
+                    {
+                        Main.LogError("\"source\" does not have CVendorOption buffer");
+                        return false;
+                    }
+                    if (vendor.SelectedIndex < 0 || vendor.SelectedIndex > optionsBuffer.Length - 1)
+                    {
+                        Main.LogError("CAppliancePartVendor.SelectedIndex out of range!");
+                        return false;
+                    }
+                    partID = optionsBuffer[vendor.SelectedIndex].ID;
+                    break;
                 case CAppliancePartSource.SourceType.PartialAppliance:
                 case CAppliancePartSource.SourceType.AttachableAppliance:
                     if (!ctx.RequireBuffer(source, out DynamicBuffer<CConsumedPart> partsBuffer))
@@ -71,7 +89,7 @@ namespace CraftingLib.Utils
                             continue;
                         if (!GameData.Main.TryGet(consumedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
                             continue;
-                        if (sourceType == CAppliancePartSource.SourceType.PartialAppliance? !partGDO.IsWithdrawable : !partGDO.IsDetachable)
+                        if (sourceType == CAppliancePartSource.SourceType.PartialAppliance ? !partGDO.IsWithdrawable : !partGDO.IsDetachable)
                             continue;
                         consumedPart.IsPartHeld = true;
                         partsBuffer[i] = consumedPart;
@@ -79,9 +97,15 @@ namespace CraftingLib.Utils
                         break;
                     }
                     break;
+                case CAppliancePartSource.SourceType.Custom:
+                    partID = 0;// Call Func in yet to be declared registry. Should return a part id
+                    break;
                 default:
                     break;
             }
+
+            if (partID == 0)
+                return false;
 
             Entity entity = ctx.CreateEntity();
             if (preventCleanup)
@@ -93,7 +117,8 @@ namespace CraftingLib.Utils
             {
                 ID = partID,
                 Source = source,
-                SourceType = sourceType
+                SourceType = sourceType,
+                CustomSourceTypeID = sourceComp.CustomSourceTypeID
             });
             ctx.Set(entity, new CAddAppliancePartProperties());
 

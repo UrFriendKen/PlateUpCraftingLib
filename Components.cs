@@ -16,93 +16,99 @@ namespace CraftingLib
         public int ID;
         public Entity Source;
         public CAppliancePartSource.SourceType SourceType;
-        public int CustomSourceTypeID;
+        public FixedString128 CustomSourceTypeID;
 
         public void Consume(EntityContext ctx, bool returnPart = false)
         {
-            if (CustomSourceTypeID != default)
+            bool success = true;
+            if (!ctx.Require(Source, out CAppliancePartSource source))
             {
-                // Invoke handler from yet to be declared registry
-                // Handler should be an Action<CAppliancePart, EntityContext, bool> ?
+                success = false;
+                Main.LogError("CAppliancePart.Consume unable to find CAppliancePartSource component in \"Source\"");
             }
 
-            else
+            if (success && !source.Type.HasFlag(SourceType))
             {
-                bool success = true;
-                if (!ctx.Require(Source, out CAppliancePartSource source))
+                success = false;
+                Main.LogError($"Source does not have {SourceType} flag set");
+            }
+                
+            if (success)
+            {
+                switch (SourceType)
                 {
-                    success = false;
-                    Main.LogError("CAppliancePart.Consume unable to find CAppliancePartSource component in \"Source\"");
-                }
+                    case CAppliancePartSource.SourceType.Store:
+                        if (!ctx.Require(Source, out CAppliancePartStore sourcePartStore))
+                        {
+                            Main.LogError("\"source\" does not have CAppliancePartStore component");
+                            break;
+                        }
 
-                if (success && !source.Type.HasFlag(SourceType))
-                {
-                    success = false;
-                    Main.LogError($"Source does not have {SourceType} flag set");
-                }
+                        sourcePartStore.HeldCount--;
+                        if (sourcePartStore.HeldCount < 0)
+                            sourcePartStore.HeldCount = 0;
+                        if (!returnPart && !sourcePartStore.IsInfinite)
+                        {
+                            sourcePartStore.Remaining--;
+                            if (sourcePartStore.Remaining < 0)
+                                sourcePartStore.Remaining = 0;
+                        }
+                        ctx.Set(Source, sourcePartStore);
+                        break;
+                    case CAppliancePartSource.SourceType.PartialAppliance:
+                    case CAppliancePartSource.SourceType.AttachableAppliance:
+                        if (!ctx.RequireBuffer(Source, out DynamicBuffer<CConsumedPart> partsBuffer))
+                        {
+                            break;
+                        }
 
-                if (success)
-                {
-                    switch (SourceType)
-                    {
-                        case CAppliancePartSource.SourceType.Store:
-                            if (!ctx.Require(Source, out CAppliancePartStore sourcePartStore))
+                        for (int i = partsBuffer.Length - 1; i > -1; i--)
+                        {
+                            CConsumedPart consumedPart = partsBuffer[i];
+                            if (consumedPart.ID == ID && consumedPart.IsPartHeld)
                             {
-                                Main.LogError("\"source\" does not have CAppliancePartStore component");
+                                partsBuffer.RemoveAt(i);
                                 break;
                             }
+                        }
 
-                            sourcePartStore.HeldCount--;
-                            if (sourcePartStore.HeldCount < 0)
-                                sourcePartStore.HeldCount = 0;
-                            if (!returnPart && !sourcePartStore.IsInfinite)
+                        if (returnPart)
+                        {
+                            ctx.AppendToBuffer(Source, new CConsumedPart()
                             {
-                                sourcePartStore.Remaining--;
-                                if (sourcePartStore.Remaining < 0)
-                                    sourcePartStore.Remaining = 0;
-                            }
-                            ctx.Set(Source, sourcePartStore);
-                            break;
-                        case CAppliancePartSource.SourceType.PartialAppliance:
-                        case CAppliancePartSource.SourceType.AttachableAppliance:
-                            if (!ctx.RequireBuffer(Source, out DynamicBuffer<CConsumedPart> partsBuffer))
-                            {
-                                break;
-                            }
+                                ID = ID,
+                                IsPartHeld = false
+                            });
+                        }
 
-                            for (int i = partsBuffer.Length - 1; i > -1; i--)
-                            {
-                                CConsumedPart consumedPart = partsBuffer[i];
-                                if (consumedPart.ID == ID && consumedPart.IsPartHeld)
-                                {
-                                    partsBuffer.RemoveAt(i);
-                                    break;
-                                }
-                            }
-
-                            if (returnPart)
-                            {
-                                ctx.AppendToBuffer(Source, new CConsumedPart()
-                                {
-                                    ID = ID,
-                                    IsPartHeld = false
-                                });
-                            }
-
-                            break;
-                        default:
-                            break;
-                    }
+                        break;
+                    case CAppliancePartSource.SourceType.Custom:
+                        // Invoke handler from yet to be declared registry
+                        // Handler should be an Action<CAppliancePart, EntityContext, bool>?
+                        break;
+                    default:
+                        break;
                 }
             }
-        }
-
-        public void Return()
-        {
-
         }
     }
+    public struct CShowAppliancePartVendorInfo : IComponentData, IModComponent
+    {
+        public int ApplianceID;
+        public int PartID;
+        public int Price;
+        public bool ShowPrice;
+    }
+
+    public struct CAppliancePartVendorInfo : IComponentData
+    {
+        public int ID;
+        public ApplianceInfoMode Mode;
+        public int Price;
+    }
+
     public struct CAddAppliancePartProperties : IComponentData, IModComponent { }
+    
 
     /// <summary>
     /// Attach this to your Appliance Part to prevent it from being acted on by CraftingLib.StorePart system. Make your own InteractionSystem instead.
@@ -123,13 +129,15 @@ namespace CraftingLib
     {
         public enum SourceType
         {
-            None = 0,
+            Custom = 0,
             Store = 1,
             PartialAppliance = 2,
-            AttachableAppliance = 4
+            AttachableAppliance = 4,
+            Vendor = 8
         }
 
         public SourceType Type;
+        public FixedString128 CustomSourceTypeID;
     }
 
     public struct CAppliancePartStore : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent
@@ -183,8 +191,33 @@ namespace CraftingLib
     }
 
 
+    public struct CAppliancePartVendor : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent
+    {
+        public int SelectedIndex;
 
-
+        public void Attach(EntityManager em, EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent(e, this);
+            if (!em.RequireComponent(e, out CAppliancePartSource source))
+            {
+                ecb.AddComponent(e, new CAppliancePartSource()
+                {
+                    Type = CAppliancePartSource.SourceType.Vendor
+                });
+            }
+            else
+            {
+                source.Type |= CAppliancePartSource.SourceType.Vendor;
+                em.SetComponentData(e, source);
+            }
+        }
+    }
+    public struct CVendorLocked : IComponentData, IModComponent { }
+    public struct CVendorOption : IBufferElementData
+    {
+        public int ID;
+        public int PurchaseCost;
+    }
 
 
     public struct CPartialAppliance : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent

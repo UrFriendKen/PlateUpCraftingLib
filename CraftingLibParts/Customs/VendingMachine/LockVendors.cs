@@ -21,12 +21,14 @@ namespace CraftingLibParts.Customs.VendingMachine
             using NativeArray<Entity> entities = Vendors.ToEntityArray(Allocator.Temp);
             using NativeArray<CPartsVendor> vendors = Vendors.ToComponentDataArray<CPartsVendor>(Allocator.Temp);
 
+            SMoney player_money = GetOrDefault<SMoney>();
+
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
                 CPartsVendor vendor = vendors[i];
 
-                bool shouldLock = vendor.PartID == 0 || GameData.Main.TryGet(vendor.PartID, out AppliancePart _);
+                bool shouldLock = vendor.PartID == 0 || !GameData.Main.TryGet(vendor.PartID, out AppliancePart _) || vendor.Cost > player_money;
                 if (!shouldLock && Has<CLockedVendor>())
                 {
                     EntityManager.RemoveComponent<CLockedVendor>(entity);

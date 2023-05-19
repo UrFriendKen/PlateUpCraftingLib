@@ -11,10 +11,10 @@ namespace CraftingLib.Systems
         {
             _instance = this;
         }
-
-        public static bool HasCPartialAppliance(Entity entity)
+        
+        public static bool StaticHas<T>(Entity entity) where T : struct, IComponentData
         {
-            return _instance?.Has<CPartialAppliance>(entity) ?? false;
+            return _instance?.Has<T>(entity) ?? false;
         }
     }
 }

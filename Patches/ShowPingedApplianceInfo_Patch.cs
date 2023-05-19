@@ -1,11 +1,6 @@
 ﻿using CraftingLib.Systems;
 using HarmonyLib;
 using Kitchen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CraftingLib.Patches
 {
@@ -16,7 +11,7 @@ namespace CraftingLib.Patches
         [HarmonyPrefix]
         static bool IsPossible_Prefix(ref InteractionData data)
         {
-            return !PatchController.HasCPartialAppliance(data.Target);
+            return !(PatchController.StaticHas<CPartialAppliance>(data.Target) || PatchController.StaticHas<CAppliancePartVendor>(data.Target));
         }
     }
 }

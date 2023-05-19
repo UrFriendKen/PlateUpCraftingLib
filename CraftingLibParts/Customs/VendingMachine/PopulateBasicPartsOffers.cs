@@ -1,5 +1,4 @@
-﻿using CraftingLib.GameDataObjects;
-using Kitchen;
+﻿using Kitchen;
 using KitchenLib.Utils;
 using KitchenMods;
 using System.Collections.Generic;
@@ -17,7 +16,10 @@ namespace CraftingLibParts.Customs.VendingMachine
         protected override void OnUpdate()
         {
             if (Has<SIsNightFirstUpdate>() || Offers.IsNullOrEmpty())
+            {
                 Offers = PartsRegistry.GetAllBasicApplianceParts().Select(x => x.ID).ToList();
+                Set<SOffersPopulated>();
+            }
 
             if (Has<SIsDayTime>() && TryGetSingletonEntity<SOffersPopulated>(out Entity singletonEntity))
                 EntityManager.DestroyEntity(singletonEntity);

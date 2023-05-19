@@ -39,7 +39,9 @@ namespace CraftingLib.Customs
 
         public virtual List<IComponentData> ComponentsAddWhenDetached { get; protected set; } = new List<IComponentData>();
 
-        public virtual int PurchaseCost { get; protected set; } = 3;
+        public virtual int PurchaseCost { get; protected set; }
+
+        public virtual bool IsPurchasable { get; protected set; }
 
         public virtual void SetupPrefab(GameObject prefab)
         {
@@ -75,6 +77,10 @@ namespace CraftingLib.Customs
             if (appliancePart.PurchaseCost != PurchaseCost)
             {
                 appliancePart.PurchaseCost = PurchaseCost;
+            }
+            if (appliancePart.IsPurchasable != IsPurchasable)
+            {
+                appliancePart.IsPurchasable = IsPurchasable;
             }
             if (InfoList.Count > 0)
             {

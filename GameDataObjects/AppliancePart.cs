@@ -28,6 +28,8 @@ namespace CraftingLib.GameDataObjects
 
         public int PurchaseCost;
 
+        public bool IsPurchasable;
+
         protected override void InitialiseDefaults()
         {
             Properties = new List<IAppliancePartProperty>();
