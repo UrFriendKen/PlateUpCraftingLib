@@ -1,4 +1,5 @@
-﻿using Kitchen;
+﻿using CraftingLib.Views;
+using Kitchen;
 using KitchenData;
 using KitchenLib.Customs;
 using KitchenLib.References;
@@ -52,5 +53,16 @@ namespace CraftingLib.Customs.VendingMachine
                 Description = "Buy Appliance Parts Here"
             })
         };
+
+        public override void SetupPrefab(GameObject prefab)
+        {
+            VendorDisplayPartSubview partDisplayView = prefab.AddComponent<VendorDisplayPartSubview>();
+            GameObject holder = new GameObject("Part Hold Point");
+            holder.transform.SetParent(partDisplayView.transform);
+            holder.transform.localScale = Vector3.one * 0.6f;
+            holder.transform.localPosition = new Vector3(0f, 1f, 0f);
+            holder.transform.localRotation = Quaternion.identity;
+            partDisplayView.Holder = holder;
+        }
     }
 }

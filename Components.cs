@@ -212,7 +212,16 @@ namespace CraftingLib
             }
         }
     }
-    public struct CVendorLocked : IComponentData, IModComponent { }
+    public struct CVendorLocked : IComponentData, IModComponent
+    {
+        public enum LockReason
+        {
+            InvalidID,
+            NotEnoughMoney
+        }
+
+        public LockReason Reason;
+    }
     public struct CVendorOption : IBufferElementData
     {
         public int ID;

@@ -12,8 +12,7 @@ namespace CraftingLib.Systems
         {
             base.Initialise();
             Infos = GetEntityQuery(new QueryHelper()
-                .All(typeof(CAppliancePartVendor), typeof(CVendorOption), typeof(CShowAppliancePartVendorInfo))
-                .None(typeof(CVendorLocked)));
+                .All(typeof(CAppliancePartVendor), typeof(CVendorOption), typeof(CShowAppliancePartVendorInfo)));
         }
 
         protected override void OnUpdate()
@@ -25,6 +24,10 @@ namespace CraftingLib.Systems
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
+
+                if (Require(entity, out CVendorLocked locked) && locked.Reason == CVendorLocked.LockReason.InvalidID)
+                    continue;
+
                 CAppliancePartVendor vendor = vendors[i];
                 CShowAppliancePartVendorInfo info = infos[i];
 

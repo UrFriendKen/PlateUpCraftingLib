@@ -15,7 +15,7 @@ namespace CraftingLib.Systems
         {
             if (!Require(data.Target, out Vendor))
                 return false;
-            if (Has<CVendorLocked>(data.Target))
+            if (Require(data.Target, out CVendorLocked locked) && locked.Reason == CVendorLocked.LockReason.InvalidID)
                 return false;
             if (!RequireBuffer(data.Target, out DynamicBuffer<CVendorOption> buffer) || buffer.Length < 1)
                 return false;
