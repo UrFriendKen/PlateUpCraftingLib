@@ -3,7 +3,6 @@ using Kitchen;
 using KitchenData;
 using KitchenMods;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using static Kitchen.CApplianceInfo;
@@ -57,15 +56,16 @@ namespace CraftingLib
                         break;
                     case CAppliancePartSource.SourceType.PartialAppliance:
                     case CAppliancePartSource.SourceType.AttachableAppliance:
-                        if (!ctx.RequireBuffer(Source, out DynamicBuffer<CConsumedPart> partsBuffer))
+                    case CAppliancePartSource.SourceType.CraftStation:
+                        if (!ctx.RequireBuffer(Source, out DynamicBuffer<CUsedPart> partsBuffer))
                         {
                             break;
                         }
 
                         for (int i = partsBuffer.Length - 1; i > -1; i--)
                         {
-                            CConsumedPart consumedPart = partsBuffer[i];
-                            if (consumedPart.ID == ID && consumedPart.IsPartHeld)
+                            CUsedPart usedPart = partsBuffer[i];
+                            if (usedPart.ID == ID && usedPart.IsPartHeld)
                             {
                                 partsBuffer.RemoveAt(i);
                                 break;
@@ -74,7 +74,7 @@ namespace CraftingLib
 
                         if (returnPart)
                         {
-                            ctx.AppendToBuffer(Source, new CConsumedPart()
+                            ctx.AppendToBuffer(Source, new CUsedPart()
                             {
                                 ID = ID,
                                 IsPartHeld = false
@@ -107,8 +107,99 @@ namespace CraftingLib
         public int Price;
     }
 
+    public struct CAppliancePartCraftStation : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent
+    {
+        public int RecipeGroupID;
+        public int SlotCount;
+        public bool AllowAddAnyPart;
+        public bool MultipleCraftsInDay;
+
+        public void Attach(EntityManager em, EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent(e, this);
+            if (!em.RequireComponent(e, out CAppliancePartSource source))
+            {
+                ecb.AddComponent(e, new CAppliancePartSource()
+                {
+                    Type = CAppliancePartSource.SourceType.CraftStation
+                });
+            }
+            else
+            {
+                source.Type |= CAppliancePartSource.SourceType.CraftStation;
+                em.SetComponentData(e, source);
+            }
+        }
+
+        public bool HasResult(EntityContext ctx, Entity e, out int resultID)
+        {
+            return HasResult(ctx, e, out resultID, out _);
+        }
+
+        public bool HasResult(EntityContext ctx, Entity e, out AppliancePart result)
+        {
+            return HasResult(ctx, e, out _, out result);
+        }
+
+        public bool HasResult(EntityContext ctx, Entity e, out int resultID, out AppliancePart result)
+        {
+            resultID = 0;
+            result = null;
+            if (!GameData.Main.TryGet(RecipeGroupID, out AppliancePartRecipeGroup recipeGroup, warn_if_fail: true))
+                return false;
+            if (!ctx.RequireBuffer(e, out DynamicBuffer<CUsedPart> buffer))
+                buffer = ctx.AddBuffer<CUsedPart>(e);
+
+            List<int> usedParts = new List<int>();
+            foreach (CUsedPart usedPart in buffer)
+            {
+                if (usedPart.IsPartHeld)
+                    return false;
+                usedParts.Add(usedPart.ID);
+            }
+
+            int applianceID = 0;
+            if (ctx.Require(e, out CAppliance appliance))
+                applianceID = appliance.ID;
+
+            if (!recipeGroup.IsMatch(applianceID, usedParts, out result))
+                return false;
+            resultID = result.ID;
+            return true;
+        }
+
+        public bool UsesPart(int applianceID, int partID)
+        {
+            if (!GameData.Main.TryGet(RecipeGroupID, out AppliancePartRecipeGroup recipeGroup, warn_if_fail: true))
+                return false;
+            return recipeGroup.UsesPart(applianceID, partID);
+        }
+
+        public bool AddPart(EntityContext ctx, Entity applianceEntity, CAppliancePart part)
+        {
+            if (part.Source == applianceEntity)
+                return false;
+
+            if (!ctx.RequireBuffer(applianceEntity, out DynamicBuffer<CUsedPart> buffer))
+                buffer = ctx.AddBuffer<CUsedPart>(applianceEntity);
+            if (buffer.Length >= SlotCount)
+                return false;
+
+            ctx.AppendToBuffer(applianceEntity, new CUsedPart()
+            {
+                ID = part.ID
+            });
+            return true;
+        }
+    }
+    public struct CCraftPerformed : ICommandData, IModComponent { }
+
+    public struct CRecipeSatisfied : IComponentData, IModComponent
+    {
+        public int Result;
+    }
+
     public struct CAddAppliancePartProperties : IComponentData, IModComponent { }
-    
 
     /// <summary>
     /// Attach this to your Appliance Part to prevent it from being acted on by CraftingLib.StorePart system. Make your own InteractionSystem instead.
@@ -133,7 +224,8 @@ namespace CraftingLib
             Store = 1,
             PartialAppliance = 2,
             AttachableAppliance = 4,
-            Vendor = 8
+            CraftStation = 8,
+            Vendor = 16
         }
 
         public SourceType Type;
@@ -248,24 +340,24 @@ namespace CraftingLib
             if (!GameData.Main.TryGet(ID, out PartialAppliance gdo, warn_if_fail: true))
                 return false;
 
-            if (!ctx.RequireBuffer(partialApplianceEntity, out DynamicBuffer<CConsumedPart> buffer))
+            if (!ctx.RequireBuffer(partialApplianceEntity, out DynamicBuffer<CUsedPart> buffer))
             {
-                buffer = ctx.AddBuffer<CConsumedPart>(partialApplianceEntity);
+                buffer = ctx.AddBuffer<CUsedPart>(partialApplianceEntity);
             }
 
-            int matchingConsumedPartCount = 0;
-            foreach (CConsumedPart consumedPart in buffer)
+            int matchingUsedPartCount = 0;
+            foreach (CUsedPart usedPart in buffer)
             {
-                if (consumedPart.ID == partID)
-                    matchingConsumedPartCount++;
+                if (usedPart.ID == partID)
+                    matchingUsedPartCount++;
             }
             
             foreach (ApplianceRecipe recipe in gdo.Recipes)
             {
-                if (recipe.PartCount(partID) > matchingConsumedPartCount)
+                if (recipe.PartCount(partID) > matchingUsedPartCount)
                     return true;
             }
-            return false;            
+            return false;
         }
 
         public bool DepositPart(EntityContext ctx, Entity partialApplianceEntity, CAppliancePart part)
@@ -276,7 +368,7 @@ namespace CraftingLib
             if (!NeedsPart(ctx, partialApplianceEntity, part.ID))
                 return false;
 
-            ctx.AppendToBuffer(partialApplianceEntity, new CConsumedPart()
+            ctx.AppendToBuffer(partialApplianceEntity, new CUsedPart()
             {
                 ID = part.ID
             });
@@ -300,23 +392,23 @@ namespace CraftingLib
             if (!GameData.Main.TryGet(ID, out PartialAppliance gdo, warn_if_fail: true))
                 return false;
 
-            if (!ctx.RequireBuffer(e, out DynamicBuffer<CConsumedPart> buffer))
+            if (!ctx.RequireBuffer(e, out DynamicBuffer<CUsedPart> buffer))
             {
-                buffer = ctx.AddBuffer<CConsumedPart>(e);
+                buffer = ctx.AddBuffer<CUsedPart>(e);
             }
 
-            List<int> consumedParts = new List<int>();
-            foreach (CConsumedPart consumedPart in buffer)
+            List<int> usedParts = new List<int>();
+            foreach (CUsedPart usedPart in buffer)
             {
-                if (consumedPart.IsPartHeld)
+                if (usedPart.IsPartHeld)
                     return false;
-                consumedParts.Add(consumedPart.ID);
+                usedParts.Add(usedPart.ID);
             }
 
             int i = 0;
-            foreach (ApplianceRecipe recipe in gdo.Recipes.OrderByDescending(recipe => recipe.PartCount()))
+            foreach (ApplianceRecipe recipe in gdo.Recipes)
             {
-                if (recipe.IsMatch(consumedParts))
+                if (recipe.IsMatch(usedParts) && recipe.Result != null)
                 {
                     index = i;
                     appliance = recipe.Result;
@@ -348,7 +440,7 @@ namespace CraftingLib
     /// <summary>
     /// Attach this to your Partial Appliance to prevent them from being acted on by deposit part systems. Make your own InteractionSystem instead.
     /// </summary>
-    public struct CSpecialPartialAppliance : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent
+    public struct CSpecialAppliancePartHolder : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent
     {
         /// <summary>
         /// Prevent acting by CraftingLib.DepositPart
@@ -366,10 +458,18 @@ namespace CraftingLib
         /// Prevent acting by CraftingLib.DetachPart
         /// </summary>
         public bool SpecialDetach;
+        /// <summary>
+        /// Prevent acting by CraftingLib.AddPartToCraftStation
+        /// </summary>
+        public bool SpecialAdd;
+        /// <summary>
+        /// Prevent acting by CraftingLib.RemovePartToCraftStation
+        /// </summary>
+        public bool SpecialRemove;
     }
 
     [InternalBufferCapacity(5)]
-    public struct CConsumedPart : IBufferElementData
+    public struct CUsedPart : IBufferElementData
     {
         public int ID;
         public bool IsPartHeld;
@@ -421,7 +521,7 @@ namespace CraftingLib
                 return false;
             if (!partGDO.IsAttachableTo(applianceID))
                 return false;
-            if (ctx.RequireBuffer(applianceEntity, out DynamicBuffer<CConsumedPart> buffer) && buffer.Length >= MaxAttachmentCount)
+            if (ctx.RequireBuffer(applianceEntity, out DynamicBuffer<CUsedPart> buffer) && buffer.Length >= MaxAttachmentCount)
                 return false;
             return true;
         }
@@ -431,12 +531,12 @@ namespace CraftingLib
             if (part.Source == applianceEntity)
                 return false;
 
-            if (!ctx.RequireBuffer(applianceEntity, out DynamicBuffer<CConsumedPart> buffer))
-                buffer = ctx.AddBuffer<CConsumedPart>(applianceEntity);
+            if (!ctx.RequireBuffer(applianceEntity, out DynamicBuffer<CUsedPart> buffer))
+                buffer = ctx.AddBuffer<CUsedPart>(applianceEntity);
             if (buffer.Length >= MaxAttachmentCount)
                 return false;
 
-            ctx.AppendToBuffer(applianceEntity, new CConsumedPart()
+            ctx.AppendToBuffer(applianceEntity, new CUsedPart()
             {
                 ID = part.ID
             });

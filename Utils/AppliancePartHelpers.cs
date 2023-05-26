@@ -77,23 +77,39 @@ namespace CraftingLib.Utils
                     break;
                 case CAppliancePartSource.SourceType.PartialAppliance:
                 case CAppliancePartSource.SourceType.AttachableAppliance:
-                    if (!ctx.RequireBuffer(source, out DynamicBuffer<CConsumedPart> partsBuffer))
+                case CAppliancePartSource.SourceType.CraftStation:
+                    if (!ctx.RequireBuffer(source, out DynamicBuffer<CUsedPart> partsBuffer))
                     {
                         return false;
                     }
 
                     for (int i = partsBuffer.Length - 1; i > -1; i--)
                     {
-                        CConsumedPart consumedPart = partsBuffer[i];
-                        if (consumedPart.IsPartHeld)
+                        CUsedPart usedPart = partsBuffer[i];
+                        if (usedPart.IsPartHeld)
                             continue;
-                        if (!GameData.Main.TryGet(consumedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
+                        if (!GameData.Main.TryGet(usedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
                             continue;
-                        if (sourceType == CAppliancePartSource.SourceType.PartialAppliance ? !partGDO.IsWithdrawable : !partGDO.IsDetachable)
+
+                        bool canBeCreated;
+                        switch (sourceType)
+                        {
+                            case CAppliancePartSource.SourceType.PartialAppliance:
+                                canBeCreated = partGDO.IsWithdrawable;
+                                break;
+                            case CAppliancePartSource.SourceType.AttachableAppliance:
+                                canBeCreated= partGDO.IsDetachable;
+                                break;
+                            default:
+                                canBeCreated = true;
+                                break;
+                        }
+                        if (!canBeCreated)
                             continue;
-                        consumedPart.IsPartHeld = true;
-                        partsBuffer[i] = consumedPart;
-                        partID = consumedPart.ID;
+
+                        usedPart.IsPartHeld = true;
+                        partsBuffer[i] = usedPart;
+                        partID = usedPart.ID;
                         break;
                     }
                     break;

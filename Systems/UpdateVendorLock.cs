@@ -46,7 +46,6 @@ namespace CraftingLib.Systems
                     lockReason = CVendorLocked.LockReason.NotEnoughMoney;
                 }
 
-                Main.LogInfo(shouldLock);
                 if (shouldLock)
                 {
                     Set(entity, new CVendorLocked()

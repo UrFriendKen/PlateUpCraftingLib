@@ -15,9 +15,9 @@
 		<!-- ASSET BUNDLES -->
 
 		<!-- Set the next line to 'true' if you have an asset bundle -->
-		<EnableAssetBundleDeploy>false</EnableAssetBundleDeploy>
+		<EnableAssetBundleDeploy>true</EnableAssetBundleDeploy>
 		<!-- Change this if your mod.assets is located elsewhere than the default location -->
-		<AssetBundlePath>$(ProjectDir)content\mod.assets</AssetBundlePath>
+		<AssetBundlePath>$(ProjectDir)content\craftinglibparts.assets</AssetBundlePath>
 	</PropertyGroup>
 	
 	<!-- Exclude build artifacts and Unity project -->
@@ -34,24 +34,6 @@
 	<ItemGroup>
 	  <None Remove="plateup_mod_metadata.json" />
 	  <None Remove="*.png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Compile Remove="Customs\Components.cs" />
-	  <Compile Remove="Customs\VendingMachine\CycleVendor.cs" />
-	  <Compile Remove="Customs\VendingMachine\DurationRequiresNotLocked.cs" />
-	  <Compile Remove="Customs\VendingMachine\LockVendors.cs" />
-	  <Compile Remove="Customs\VendingMachine\PopulateBasicPartsOffers.cs" />
-	  <Compile Remove="Customs\VendingMachine\PurchasePartAfterDuration.cs" />
-	  <Compile Remove="Customs\VendingMachine\ShowPingedVendorPart.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="Customs\Components.cs" />
-	  <None Include="Customs\VendingMachine\CycleVendor.cs" />
-	  <None Include="Customs\VendingMachine\DurationRequiresNotLocked.cs" />
-	  <None Include="Customs\VendingMachine\LockVendors.cs" />
-	  <None Include="Customs\VendingMachine\PopulateBasicPartsOffers.cs" />
-	  <None Include="Customs\VendingMachine\PurchasePartAfterDuration.cs" />
-	  <None Include="Customs\VendingMachine\ShowPingedVendorPart.cs" />
 	</ItemGroup>
   
 	<ItemGroup>

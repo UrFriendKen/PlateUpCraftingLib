@@ -18,18 +18,18 @@ namespace CraftingLib.Systems
                 return false;
             if (!Has<CPartialAppliance>(data.Target))
                 return false;
-            if (Require(data.Target, out CSpecialPartialAppliance specialPartial) && specialPartial.SpecialWithdraw)
+            if (Require(data.Target, out CSpecialAppliancePartHolder specialPartial) && specialPartial.SpecialWithdraw)
                 return false;
-            if (!data.Context.RequireBuffer(data.Target, out DynamicBuffer<CConsumedPart> partsBuffer) || partsBuffer.Length <= 0)
+            if (!data.Context.RequireBuffer(data.Target, out DynamicBuffer<CUsedPart> partsBuffer) || partsBuffer.Length <= 0)
                 return false;
 
             bool hasWithdrawableParts = false;
             for (int i = partsBuffer.Length - 1; i > -1; i--)
             {
-                CConsumedPart consumedPart = partsBuffer[i];
-                if (consumedPart.IsPartHeld)
+                CUsedPart usedPart = partsBuffer[i];
+                if (usedPart.IsPartHeld)
                     continue;
-                if (!GameData.Main.TryGet(consumedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
+                if (!GameData.Main.TryGet(usedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
                     continue;
                 if (!partGDO.IsWithdrawable)
                     continue;

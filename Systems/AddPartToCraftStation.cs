@@ -2,16 +2,14 @@
 using Kitchen;
 using KitchenData;
 using KitchenMods;
-using System.Collections.Generic;
 using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
     [UpdateAfter(typeof(PickUpAndDropAppliance))]
-    public class AttachPart : ApplianceInteractionSystem, IModSystem
+    public class AddPartToCraftStation : ApplianceInteractionSystem, IModSystem
     {
-        private List<IComponentData> ComponentsToAdd;
-        private CPartAttachmentPoint PartAttachmentPoint;
+        private CAppliancePartCraftStation CraftStation;
         private CAppliancePart Part;
         private Entity PartEntity;
         private bool IsReturn;
@@ -20,9 +18,9 @@ namespace CraftingLib.Systems
 
         protected override bool IsPossible(ref InteractionData data)
         {
-            if (!Require(data.Target, out PartAttachmentPoint))
+            if (!Require(data.Target, out CraftStation))
                 return false;
-            if (Require(data.Target, out CSpecialAppliancePartHolder specialPartial) && specialPartial.SpecialAttach)
+            if (Require(data.Target, out CSpecialAppliancePartHolder specialHolder) && specialHolder.SpecialAdd)
                 return false;
             if (!Require(data.Target, out CAppliance appliance))
                 return false;
@@ -31,32 +29,24 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(holder.HeldItem, out Part))
                 return false;
-            if (!Has<CAttachablePart>())
-                return false;
             if (!GameData.Main.TryGet(Part.ID, out AppliancePart partGDO, warn_if_fail: true))
                 return false;
-            if (!partGDO.IsAttachableTo(applianceID))
+            if (!CraftStation.AllowAddAnyPart && !CraftStation.UsesPart(applianceID, Part.ID))
                 return false;
             IsReturn = data.Target == Part.Source;
             if (!IsReturn && data.Context.RequireBuffer(data.Target, out DynamicBuffer<CUsedPart> buffer) && 
-                buffer.Length >= PartAttachmentPoint.MaxAttachmentCount)
+                buffer.Length >= CraftStation.SlotCount)
                 return false;
-            ComponentsToAdd = partGDO.ComponentsAddWhenAttached;
             PartEntity = holder.HeldItem;
             return true;
         }
 
         protected override void Perform(ref InteractionData data)
         {
-            PartAttachmentPoint.AttachPart(data.Context, data.Target, Part);
+            CraftStation.AddPart(data.Context, data.Target, Part);
             Part.Consume(data.Context, IsReturn);
             data.Context.Destroy(PartEntity);
             data.Context.Set(data.Interactor, default(CItemHolder));
-
-            foreach (IComponentData comp in ComponentsToAdd)
-            {
-                data.Context.Set(data.Target, (dynamic)comp);
-            }
         }
     }
 }

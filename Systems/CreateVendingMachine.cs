@@ -1,10 +1,7 @@
 ﻿using CraftingLib.Customs.VendingMachine;
-using CraftingLib.GameDataObjects;
 using Kitchen;
-using KitchenData;
 using KitchenLib.Utils;
 using KitchenMods;
-using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
@@ -33,7 +30,7 @@ namespace CraftingLib.Systems
                     ID = GDOUtils.GetCustomGameDataObject<VendingMachine>().GameDataObject.ID
                 });
                 int num = ((!(frontDoor.x > 0f)) ? 1 : (-1));
-                ctx.Set(entity, new CPosition(frontDoor + new Vector3(num * 2, 0f, 0f)));
+                ctx.Set(entity, new CPosition(frontDoor + new Vector3(num * 5, 0f, 0f)));
                 ctx.Set(entity, new CDoNotPersist());
                 ctx.Set(entity, new RefreshVendingMachineOptions.SRefreshOptions());
             }

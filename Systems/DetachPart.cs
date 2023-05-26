@@ -22,18 +22,18 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(data.Target, out PartAttachmentPoint))
                 return false;
-            if (Require(data.Target, out CSpecialPartialAppliance specialPartial) && specialPartial.SpecialDetach)
+            if (Require(data.Target, out CSpecialAppliancePartHolder specialPartial) && specialPartial.SpecialDetach)
                 return false;
-            if (!data.Context.RequireBuffer(data.Target, out DynamicBuffer<CConsumedPart> partsBuffer) || partsBuffer.Length <= 0)
+            if (!data.Context.RequireBuffer(data.Target, out DynamicBuffer<CUsedPart> partsBuffer) || partsBuffer.Length <= 0)
                 return false;
 
             bool hasDetachableParts = false;
             for (int i = partsBuffer.Length - 1; i > -1; i--)
             {
-                CConsumedPart consumedPart = partsBuffer[i];
-                if (consumedPart.IsPartHeld)
+                CUsedPart UsedPart = partsBuffer[i];
+                if (UsedPart.IsPartHeld)
                     continue;
-                if (!GameData.Main.TryGet(consumedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
+                if (!GameData.Main.TryGet(UsedPart.ID, out AppliancePart partGDO, warn_if_fail: true))
                     continue;
                 if (!partGDO.IsDetachable)
                     continue;

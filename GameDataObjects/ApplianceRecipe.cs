@@ -53,6 +53,7 @@ namespace CraftingLib.GameDataObjects
 
         protected override void InitialiseDefaults()
         {
+            Parts = new Dictionary<AppliancePart, int>();
         }
 
         public override bool Localise(KitchenData.Locale locale, StringSubstitutor subs)

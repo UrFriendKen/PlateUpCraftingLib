@@ -3,17 +3,18 @@ using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace CraftingLibParts.Customs.VendingMachine
+namespace CraftingLib.Systems
 {
     [UpdateInGroup(typeof(DurationLocks))]
-    public class DurationRequiresNotLocked : GameSystemBase, IModSystem
+    public class DurationRequiresRecipeSatisfied : GameSystemBase, IModSystem
     {
         EntityQuery Durations;
         protected override void Initialise()
         {
             base.Initialise();
             Durations = GetEntityQuery(new QueryHelper()
-                .All(typeof(CPartsVendor), typeof(CTakesDuration), typeof(CLockedVendor)));
+                .All(typeof(CAppliancePartCraftStation), typeof(CTakesDuration))
+                .None(typeof(CRecipeSatisfied)));
         }
 
         protected override void OnUpdate()

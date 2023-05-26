@@ -1,6 +1,7 @@
 ﻿using KitchenLib;
 using KitchenLib.Event;
 using KitchenMods;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace CraftingLibParts
         // Mod Name is displayed to the player and listed in the mods menu
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.CraftingLibParts";
-        public const string MOD_NAME = "CraftingLib Registry";
+        public const string MOD_NAME = "CraftingLib Parts";
         public const string MOD_VERSION = "0.1.0";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
@@ -35,7 +36,18 @@ namespace CraftingLibParts
             LogInfo("Attempting to register game data...");
 
             AddGameDataObject<BasicParts.Iron>();
-            AddGameDataObject<BasicParts.Gold>();
+            AddGameDataObject<BasicParts.Iron2>();
+            AddGameDataObject<BasicParts.Iron3>();
+            AddGameDataObject<BasicParts.Iron4>();
+            AddGameDataObject<BasicParts.Iron5>();
+            AddGameDataObject<BasicParts.Iron6>();
+            //AddGameDataObject<BasicParts.Gold>();
+            //AddGameDataObject<BasicParts.Wood>();
+            //AddGameDataObject<BasicParts.Sand>();
+            //AddGameDataObject<IntermediateParts.Glass>();
+
+            AddGameDataObject<TwoShardsToOneCrystal>();
+            AddGameDataObject<CrystalToFaceted>();
 
             LogInfo("Done loading game data.");
         }
@@ -49,9 +61,9 @@ namespace CraftingLibParts
             // TODO: Uncomment the following if you have an asset bundle.
             // TODO: Also, make sure to set EnableAssetBundleDeploy to 'true' in your ModName.csproj
 
-            // LogInfo("Attempting to load asset bundle...");
-            // Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
-            // LogInfo("Done loading asset bundle.");
+            LogInfo("Attempting to load asset bundle...");
+            Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
+            LogInfo("Done loading asset bundle.");
 
             // Register custom GDOs
             AddGameData();

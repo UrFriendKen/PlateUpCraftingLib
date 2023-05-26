@@ -13,22 +13,18 @@ namespace CraftingLib.Systems
         {
             base.Initialise();
             PartialAppliances = GetEntityQuery(new QueryHelper()
-                .All(typeof(CAppliance), typeof(CPartialAppliance), typeof(CPosition)));
+                .All(typeof(CAppliance), typeof(CPartialAppliance)));
         }
 
         protected override void OnUpdate()
         {
             EntityContext ctx = new EntityContext(EntityManager);
             using NativeArray<Entity> entities = PartialAppliances.ToEntityArray(Allocator.Temp);
-            using NativeArray<CAppliance> appliances = PartialAppliances.ToComponentDataArray<CAppliance>(Allocator.Temp);
-            using NativeArray<CPosition> positions = PartialAppliances.ToComponentDataArray<CPosition>(Allocator.Temp);
             using NativeArray<CPartialAppliance> partialAppliances = PartialAppliances.ToComponentDataArray<CPartialAppliance>(Allocator.Temp);
 
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
-                CAppliance appliance = appliances[i];
-                CPosition position = positions[i];
                 CPartialAppliance partialAppliance = partialAppliances[i];
 
                 if (!partialAppliance.IsComplete(ctx, entity, out Appliance result))

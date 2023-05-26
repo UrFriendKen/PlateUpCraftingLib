@@ -40,13 +40,13 @@ namespace CraftingLib.Views
                     CLinkedView view = views[i];
                     CPartialApplianceInfo info = infos[i];
 
-                    Dictionary<int, int> consumedParts = new Dictionary<int, int>();
+                    Dictionary<int, int> usedParts = new Dictionary<int, int>();
                     for (int j = 0; j < info.PartIDs.Length; j++)
                     {
                         int partID = info.PartIDs[j];
-                        if (!consumedParts.ContainsKey(partID))
+                        if (!usedParts.ContainsKey(partID))
                         {
-                            consumedParts[partID] = info.PartCount[j];
+                            usedParts[partID] = info.PartCount[j];
                         }
                     }
 
@@ -57,7 +57,7 @@ namespace CraftingLib.Views
                         Mode = info.Mode,
                         Price = info.Price,
                         RecipeIndex = info.RecipeIndex, // Currrently unused
-                        ConsumedParts = consumedParts
+                        usedParts = usedParts
                     });
                 }
             }
@@ -76,7 +76,7 @@ namespace CraftingLib.Views
 
             [Key(4)] public int RecipeIndex;
 
-            [Key(5)] public Dictionary<int, int> ConsumedParts;
+            [Key(5)] public Dictionary<int, int> usedParts;
 
             public bool IsChangedFrom(ViewData check)
             {
@@ -85,16 +85,16 @@ namespace CraftingLib.Views
                     Mode != check.Mode ||
                     Price != check.Price ||
                     RecipeIndex != check.RecipeIndex ||
-                    ConsumedPartsIsChangedFrom(check);
+                    UsedPartsIsChangedFrom(check);
             }
 
-            private bool ConsumedPartsIsChangedFrom(ViewData check)
+            private bool UsedPartsIsChangedFrom(ViewData check)
             {
-                if (ConsumedParts.Count != check.ConsumedParts.Count)
+                if (usedParts.Count != check.usedParts.Count)
                     return true;
-                foreach (KeyValuePair<int, int> parts in ConsumedParts)
+                foreach (KeyValuePair<int, int> parts in usedParts)
                 {
-                    if (!check.ConsumedParts.TryGetValue(parts.Key, out int count))
+                    if (!check.usedParts.TryGetValue(parts.Key, out int count))
                         return true;
                     if (parts.Value != count)
                         return true;
@@ -116,7 +116,7 @@ namespace CraftingLib.Views
             if (!GameData.Main.TryGet(data.ID, out PartialAppliance gdo))
             {
                 Title.text = $"Partial Appliance ({data.ID})";
-                Description.text = "Oopsie! PartAttachmentPoint GDO not found.";
+                Description.text = "Oopsie! PartialAppliance GDO not found.";
                 return;
             }
             float yPos = SectionStartOffset;
@@ -146,10 +146,10 @@ namespace CraftingLib.Views
             {
                 yPos += AddSection(yPos, gdo.Sections[i]);
             }
-            if (data.ConsumedParts.Count > 0)
+            if (data.usedParts.Count > 0)
             {
                 List<string> partStrings = new List<string>();
-                foreach (KeyValuePair<int, int> part in data.ConsumedParts)
+                foreach (KeyValuePair<int, int> part in data.usedParts)
                 {
                     string partName = $"{part.Key}"; // Part ID, as default value if gdo cannot be found
                     if (GameData.Main.TryGet<AppliancePart>(part.Key, out AppliancePart partGDO))
@@ -167,8 +167,8 @@ namespace CraftingLib.Views
             }
             else
             {
-                string consumedPartsTag = "No Parts Inserted";     // To populate GlobalLocalisation.Text
-                yPos += AddTag(yPos, consumedPartsTag);
+                string usedPartsTag = "No Parts Inserted";     // To populate GlobalLocalisation.Text
+                yPos += AddTag(yPos, usedPartsTag);
             }
             if (gdo.HasUpgrades)
             {

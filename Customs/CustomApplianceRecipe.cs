@@ -14,7 +14,7 @@ namespace CraftingLib.Customs
         /// <summary>
         /// Dictionary containing quantity of each required AppliancePart.
         /// </summary>
-        public virtual Dictionary<AppliancePart, int> Parts { get; protected set; }
+        public virtual Dictionary<AppliancePart, int> Parts { get; protected set; } = new Dictionary<AppliancePart, int>();
 
         /// <summary>
         /// Appliance obtained from recipe. Can also be a PartialAppliance.

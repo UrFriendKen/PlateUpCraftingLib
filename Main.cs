@@ -1,10 +1,13 @@
-﻿using CraftingLib.Customs.VendingMachine;
+﻿using CraftingLib.Customs.CraftingDesk;
+using CraftingLib.Customs.VendingMachine;
+using CraftingLib.GameDataObjects;
 using Kitchen;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenLib.Utils;
 using KitchenMods;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -57,6 +60,8 @@ namespace CraftingLib
             //LogInfo("Done loading asset bundle.");
 
             AddGameDataObject<VendingMachine>();
+            AddGameDataObject<CraftingDesk>();
+            AddGameDataObject<CraftingDeskRecipeGroup>();
 
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
@@ -68,6 +73,9 @@ namespace CraftingLib
                         continue;
                     baseGameTexts.Add(text.Key, text.Value);
                 }
+
+                AppliancePartRecipeGroup craftingDeskRecipeGroup = GDOUtils.GetCustomGameDataObject<CraftingDeskRecipeGroup>().GameDataObject as AppliancePartRecipeGroup;
+                craftingDeskRecipeGroup.Recipes = args.gamedata.Get<AppliancePartRecipe>().Where(x => x.AllowCraftingDesk && x.Result != null && x.Inputs.Count > 0).ToHashSet();
             };
         }
         #region Logging

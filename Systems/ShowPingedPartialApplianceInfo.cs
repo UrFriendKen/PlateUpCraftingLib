@@ -42,11 +42,11 @@ namespace CraftingLib.Systems
             FixedListInt128 partIDs = new FixedListInt128();
             FixedListInt128 partCount = new FixedListInt128();
 
-            if (data.Context.RequireBuffer(data.Target, out DynamicBuffer<CConsumedPart> partBuffer))
+            if (data.Context.RequireBuffer(data.Target, out DynamicBuffer<CUsedPart> partBuffer))
             {
                 for (int i = 0; i < partBuffer.Length; i++)
                 {
-                    CConsumedPart part = partBuffer[i];
+                    CUsedPart part = partBuffer[i];
                     int existingIndex = partIDs.IndexOf(part.ID);
                     if (existingIndex != -1)
                     {

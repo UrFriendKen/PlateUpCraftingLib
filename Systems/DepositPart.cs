@@ -20,7 +20,7 @@ namespace CraftingLib.Systems
         {
             if (!Require(data.Target, out PartialAppliance))
                 return false;
-            if (Require(data.Target, out CSpecialPartialAppliance specialPartial) && specialPartial.SpecialDeposit)
+            if (Require(data.Target, out CSpecialAppliancePartHolder specialPartial) && specialPartial.SpecialDeposit)
                 return false;
             if (!Require(data.Interactor, out CItemHolder holder) || holder.HeldItem == default)
                 return false;
