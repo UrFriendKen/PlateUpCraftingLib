@@ -1,37 +1,200 @@
 ﻿using KitchenLib.Utils;
 using System;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 using static CraftingLibParts.FixedPrefabType;
 
 namespace CraftingLibParts
 {
+    public abstract class BasePrefab
+    {
+        private GameObject _prefab;
+
+        public GameObject Prefab
+        {
+            get
+            {
+                if (_prefab == null)
+                {
+                    _prefab = GameObject.Instantiate(Main.Bundle.LoadAsset<GameObject>(AssetBundleObjectName));
+                }
+                return _prefab;
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return Prefab.name;
+            }
+            set
+            {
+                Prefab.name = value;
+            }
+        }
+
+        private Material _material;
+        public Material Material
+        {
+            get
+            {
+                return _material;
+            }
+            set
+            {
+                ApplyMaterial(Prefab, value);
+                _material = value;
+            }
+        }
+
+        private Vector3 _scale = Vector3.one;
+        public Vector3 Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                ApplyScale(Prefab, _scale);
+                _scale = value;
+            }
+        }
+
+        public Transform Parent
+        {
+            get
+            {
+                return Prefab.transform.parent;
+            }
+            set
+            {
+                SetParent(value);
+            }
+        }
+        public void SetParent(Transform p)
+        {
+            SetParent(p, false);
+        }
+        public void SetParent(Transform p, bool worldPositionStays)
+        {
+            Prefab.transform.SetParent(p, worldPositionStays);
+        }
+
+        public abstract string AssetBundleObjectName { get; }
+        protected abstract void ApplyMaterial(GameObject gameObject, Material material);
+        protected abstract void ApplyScale(GameObject gameObject, Vector3 scale);
+    }
+
+    public abstract class StandardMonolithicPrefab : BasePrefab
+    {
+        protected sealed override void ApplyMaterial(GameObject gameObject, Material material)
+        {
+            MaterialUtils.ApplyMaterial(gameObject, "Anchor/Scale/Model", new Material[] { material });
+        }
+
+        protected sealed override void ApplyScale(GameObject gameObject, Vector3 scale)
+        {
+            gameObject.transform.Find("Anchor").transform.localScale = scale;
+        }
+    }
+
+    public class BlockPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Block";
+    }
+    public class CrystalPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Crystal";
+    }
+    public class FacetedGemPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "FacetedGem";
+    }
+    public class IngotPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Ingot";
+    }
+    public class LogPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Log";
+    }
+    public class NuggetPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Nugget";
+    }
+    public class RodPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Rod";
+    }
+    public class ShardPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Shard";
+    }
+    public class StickPrefab : StandardMonolithicPrefab
+    {
+        public override string AssetBundleObjectName => "Stick";
+    }
+
+    public class PlatePrefab : BasePrefab
+    {
+        public override string AssetBundleObjectName => "Plate";
+
+        protected override void ApplyMaterial(GameObject gameObject, Material material)
+        {
+            Material[] materialArr = new Material[] { material };
+            MaterialUtils.ApplyMaterial(gameObject, "Anchor/Scale/Pattern", materialArr);
+            MaterialUtils.ApplyMaterial(gameObject, "Anchor/Scale/Pattern.001", materialArr);
+            MaterialUtils.ApplyMaterial(gameObject, "Anchor/Scale/Base", materialArr);
+        }
+
+        protected override void ApplyScale(GameObject gameObject, Vector3 scale)
+        {
+            gameObject.transform.Find("Anchor").transform.localScale = scale;
+        }
+    }
+
+
+
+
+
+
     public static class FixedPrefabType
     {
-            public interface IBar { }   
-            public interface IBlock { }
-            public interface IPlate { }
-            public interface IRod { }
-            public interface IShard { }
-            public interface ICrystal { }
-            public interface IFaceted { }
-            public interface ILog { }
-            public interface IStick { }
+        // Powder?
+
+        public interface INugget { }
+        public interface IIngot { }
+        public interface IBlock { }
+        public interface IPlate { }
+        public interface IRod { }
+        public interface IShard { }
+        public interface ICrystal { }
+        public interface IFaceted { }
+        public interface ILog { }
+        public interface IStick { }
+
+        // Bottle (For gases and liquids?
     }
 
     public class PrefabRegistry
     {
         private static GameObject _prefabHider;
-        private static Dictionary<Type, GameObject> _prefabs;
+        private static Dictionary<Type, BasePrefab> _prefabs;
 
-        private static Dictionary<Type, string> _interfaceToPrefabNameMap = new Dictionary<Type, string>()
+        private static readonly Dictionary<Type, Type> _interfaceToPrefabNameMap = new Dictionary<Type, Type>()
         {
-            { typeof(IBlock), "Block" },
-            { typeof(IStick), "Stick" },
-            { typeof(ILog), "Log" },
-            { typeof(IShard), "Shard" },
-            { typeof(ICrystal), "Crystal" },
-            { typeof(IFaceted), "FacetedGem" },
+            { typeof(INugget), typeof(NuggetPrefab) },
+            { typeof(IIngot), typeof(IngotPrefab) },
+            { typeof(IBlock), typeof(BlockPrefab) },
+            { typeof(IPlate), typeof(PlatePrefab) },
+            { typeof(IRod), typeof(RodPrefab) },
+            { typeof(IShard), typeof(ShardPrefab) },
+            { typeof(ICrystal), typeof(CrystalPrefab) },
+            { typeof(IFaceted), typeof(FacetedGemPrefab) },
+            { typeof(IStick), typeof(StickPrefab) },
+            { typeof(ILog), typeof(LogPrefab) }
         };
         private const string FALLBACK_ASSET_BUNDLE_PREFAB_NAME = "Block";
 
@@ -53,7 +216,7 @@ namespace CraftingLibParts
         {
             if (_prefabs == null)
             {
-                _prefabs = new Dictionary<Type, GameObject>();
+                _prefabs = new Dictionary<Type, BasePrefab>();
             }
 
             if (_prefabHider == null)
@@ -62,48 +225,41 @@ namespace CraftingLibParts
                 _prefabHider.SetActive(false);
             }
 
-            if (!_prefabs.TryGetValue(T, out GameObject prefab))
+            if (!_prefabs.TryGetValue(T, out BasePrefab basePrefab))
             {
-                prefab = GetCorrectAssetBundlePrefabCopy(T);
-                prefab.transform.SetParent(_prefabHider.transform);
-                Transform anchor = prefab.transform.Find("Anchor");
-                if (anchor != null)
+                basePrefab = GetNewPrefabInstance(T);
+                basePrefab.SetParent(_prefabHider.transform);
+                basePrefab.Scale = new Vector3(scaleX, scaleY, scaleZ);
+                if (material == null)
                 {
-                    anchor.localScale = new Vector3(scaleX, scaleY, scaleZ);
-
-                    if (material == null)
-                    {
-                        material = MaterialUtils.GetExistingMaterial("Metal Dark");
-                    }
-                    MaterialUtils.ApplyMaterial(prefab, "Anchor/Scale/Model", new Material[] { material });
+                    material = MaterialUtils.GetExistingMaterial("Metal Dark");
                 }
-
-                _prefabs[T] = prefab;
+                basePrefab.Material = material;
+                _prefabs[T] = basePrefab;
             }
 
-            return prefab;
+            return basePrefab.Prefab;
         }
 
-        public static GameObject GetCorrectAssetBundlePrefabCopy<T>()
+        private static BasePrefab GetNewPrefabInstance(Type T)
         {
-            return GetCorrectAssetBundlePrefabCopy(typeof(T));
-        }
-
-        public static GameObject GetCorrectAssetBundlePrefabCopy(Type T)
-        {
-            string prefabName = FALLBACK_ASSET_BUNDLE_PREFAB_NAME;
-            foreach (KeyValuePair<Type, string> item in _interfaceToPrefabNameMap)
+            Type prefabType = null;
+            foreach (KeyValuePair<Type, Type> item in _interfaceToPrefabNameMap)
             {
                 if (item.Key.IsAssignableFrom(T))
                 {
-                    prefabName = item.Value;
+                    prefabType = item.Value;
                     break;
                 }
             }
-            GameObject gO = GameObject.Instantiate(Main.Bundle.LoadAsset<GameObject>(prefabName));
-            gO.name = $"{T.Name}_{prefabName}";
 
-            return gO;
+            if (prefabType == null)
+                return null;
+
+            BasePrefab prefab = Activator.CreateInstance(prefabType) as BasePrefab;
+            prefab.Name = $"{T.Name}_{prefabType}";
+
+            return prefab;
         }
     }
 }

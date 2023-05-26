@@ -9,12 +9,14 @@ using static CraftingLibParts.FixedPrefabType;
 
 namespace CraftingLibParts
 {
-    public abstract class StandardPart : CustomAppliancePart { }
-
-    public abstract class BasicPart : StandardPart
+    public abstract class StandardPart : CustomAppliancePart
     {
         public override sealed GameObject Prefab => PrefabRegistry.GetPrefab(GetType(), material: PrefabMaterial);
         public virtual Material PrefabMaterial { get; protected set; } = MaterialUtils.GetExistingMaterial("Metal");
+    }
+
+    public abstract class BasicPart : StandardPart
+    {
         public sealed override bool IsPurchasable => true;
     }
 
@@ -26,10 +28,14 @@ namespace CraftingLibParts
     public static class BasicParts
     {
         #region Nuggets
-        public static AppliancePart CraftingLibIron => GDOUtils.GetCastedGDO<AppliancePart, Iron>();
-        public class Iron : BasicPart, ICrystal
+        public abstract class BasicNugget : BasicPart, INugget
         {
-            public override string UniqueNameID => "basicPartIron";
+        }
+
+        public static AppliancePart AluminumNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAluminumNugget>();
+        public class CraftingLibAluminumNugget : BasicNugget
+        {
+            public override string UniqueNameID => "aluminumNugget";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -37,15 +43,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Crystal",
+                    Name = "Aluminum Nugget",
                     Description = "Ferrous metal"
                 })
             };
         }
-        public static AppliancePart CraftingLibIron2 => GDOUtils.GetCastedGDO<AppliancePart, Iron2>();
-        public class Iron2 : BasicPart, IFaceted
+
+        public static AppliancePart TitaniumNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTitaniumNugget>();
+        public class CraftingLibTitaniumNugget : BasicNugget
         {
-            public override string UniqueNameID => "basicPartIron2";
+            public override string UniqueNameID => "titaniumNugget";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -53,15 +60,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Faceted Gem",
+                    Name = "Titanium Nugget",
                     Description = "Ferrous metal"
                 })
             };
         }
-        public static AppliancePart CraftingLibIron3 => GDOUtils.GetCastedGDO<AppliancePart, Iron3>();
-        public class Iron3 : BasicPart, IShard
+
+        public static AppliancePart ChromiumNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibChromiumNugget>();
+        public class CraftingLibChromiumNugget : BasicNugget
         {
-            public override string UniqueNameID => "basicPartIron3";
+            public override string UniqueNameID => "chromiumNugget";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -69,15 +77,67 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Shard",
+                    Name = "Chromium Nugget",
                     Description = "Ferrous metal"
                 })
             };
         }
-        public static AppliancePart CraftingLibIron4 => GDOUtils.GetCastedGDO<AppliancePart, Iron4>();
-        public class Iron4 : BasicPart, ILog
+
+        public static AppliancePart IronNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibIronNugget>();
+        public class CraftingLibIronNugget : BasicNugget
         {
-            public override string UniqueNameID => "basicPartIron4";
+            public override string UniqueNameID => "ironNugget";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal Dark");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Iron Nugget",
+                    Description = "Ferrous metal"
+                })
+            };
+        }
+
+        public static AppliancePart CobaltNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibCobaltNugget>();
+        public class CraftingLibCobaltNugget : BasicNugget
+        {
+            public override string UniqueNameID => "cobaltNugget";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal- Shiny Blue");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Cobalt Nugget",
+                    Description = "Ferrous metal"
+                })
+            };
+        }
+
+        public static AppliancePart CopperNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibCopperNugget>();
+        public class CraftingLibCopperNugget : BasicNugget
+        {
+            public override string UniqueNameID => "copperNugget";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal - Copper");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Copper Nugget",
+                    Description = "Ferrous metal"
+                })
+            };
+        }
+
+        public static AppliancePart ZincNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibZincNugget>();
+        public class CraftingLibZincNugget : BasicNugget
+        {
+            public override string UniqueNameID => "zincNugget";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -85,15 +145,33 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Log",
+                    Name = "Zinc Nugget",
                     Description = "Ferrous metal"
                 })
             };
         }
-        public static AppliancePart CraftingLibIron5 => GDOUtils.GetCastedGDO<AppliancePart, Iron5>();
-        public class Iron5 : BasicPart, IStick
+
+        public static AppliancePart SilverNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSilverNugget>();
+        public class CraftingLibSilverNugget : BasicNugget
         {
-            public override string UniqueNameID => "basicPartIron5";
+            public override string UniqueNameID => "silverNugget";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal- Shiny");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Silver Nugget",
+                    Description = "Ferrous metal"
+                })
+            };
+        }
+
+        public static AppliancePart TinNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTinNugget>();
+        public class CraftingLibTinNugget : BasicNugget
+        {
+            public override string UniqueNameID => "tinNugget";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -101,58 +179,42 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Stick",
+                    Name = "Tin Nugget",
                     Description = "Ferrous metal"
                 })
             };
         }
-        public static AppliancePart CraftingLibIron6 => GDOUtils.GetCastedGDO<AppliancePart, Iron6>();
-        public class Iron6 : BasicPart, IBlock
+
+        public static AppliancePart GoldNugget => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGoldNugget>();
+        public class CraftingLibGoldNugget : BasicNugget
         {
-            public override string UniqueNameID => "basicPartIron6";
+            public override string UniqueNameID => "goldNugget";
             public override int PurchaseCost => 0;
-            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
-
-            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
-            {
-                (Locale.English, new BasicInfo()
-                {
-                    Name = "Block",
-                    Description = "Ferrous metal"
-                })
-            };
-        }
-
-        public static AppliancePart CraftingLibAluminum => GDOUtils.GetCastedGDO<AppliancePart, Iron>();
-        public class Aluminum : BasicPart
-        {
-            public override string UniqueNameID => "basicPartAluminum";
-            public override int PurchaseCost => 5;
-            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
-
-            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
-            {
-                (Locale.English, new BasicInfo()
-                {
-                    Name = "Aluminum",
-                    Description = "Lightweight metal"
-                })
-            };
-        }
-
-        public static AppliancePart CraftingLibGold => GDOUtils.GetCastedGDO<AppliancePart, Gold>();
-        public class Gold : BasicPart, IShard
-        {
-            public override string UniqueNameID => "basicPartGold";
-            public override int PurchaseCost => 20;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Shiny Gold");
 
             public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Gold",
-                    Description = "Shiny metal"
+                    Name = "Gold Nugget",
+                    Description = "Ferrous metal"
+                })
+            };
+        }
+
+        public static AppliancePart Carbon => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibCarbon>();
+        public class CraftingLibCarbon : BasicNugget
+        {
+            public override string UniqueNameID => "carbonNugget";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Carbon",
+                    Description = "Ferrous metal"
                 })
             };
         }
@@ -204,20 +266,255 @@ namespace CraftingLibParts
 
     public static class IntermediateParts
     {
-        #region Bars
-        public abstract class BaseBar<T> : IntermediatePart where T : BaseBar<T>
+        #region Ingots
+        public abstract class IntermediateIngot : IntermediatePart, IIngot
         {
-            public override sealed GameObject Prefab => TestCubeManager.GetPrefab<T>(scaleX: 0.5f, scaleY: 0.35f, scaleZ: 0.2f, PrefabMaterial, collider: false);
-            public virtual Material PrefabMaterial { get; protected set; } = MaterialUtils.GetExistingMaterial("Metal");
+        }
+
+        public static AppliancePart AluminumIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAluminumIngot>();
+        public class CraftingLibAluminumIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "aluminumIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Dark Yellow");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Aluminum Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart TitaniumIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTitaniumIngot>();
+        public class CraftingLibTitaniumIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "titaniumIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Dark Yellow");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Titanium Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart ChromiumIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibChromiumIngot>();
+        public class CraftingLibChromiumIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "chromiumIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Dark Yellow");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Chromium Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart IronIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibIronIngot>();
+        public class CraftingLibIronIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "ironIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal Dark");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Iron Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart CobaltIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibCobaltIngot>();
+        public class CraftingLibCobaltIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "cobaltIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal- Shiny Blue");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Cobalt Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart CopperIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibCopperIngot>();
+        public class CraftingLibCopperIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "copperIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal - Copper");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Copper Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart ZincIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibZincIngot>();
+        public class CraftingLibZincIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "zincIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Dark Yellow");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Zinc Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart SilverIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSilverIngot>();
+        public class CraftingLibSilverIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "silverIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal- Shiny");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Silver Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart TinIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTinIngot>();
+        public class CraftingLibTinIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "tinIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Tin Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart GoldIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGoldIngot>();
+        public class CraftingLibGoldIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "goldIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Plastic - Shiny Gold");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Gold Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart BrassIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBrassIngot>();
+        public class CraftingLibBrassIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "brassIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal - Brass");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Brass Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart BronzeIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBronzeIngot>();
+        public class CraftingLibBronzeIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "bronzeIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Bronze Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart CarbonSteelIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibHighCarbonSteelIngot>();
+        public class CraftingLibHighCarbonSteelIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "highCarbonSteelIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "High Carbon Steel Ingot",
+                    Description = "Ingot"
+                })
+            };
+        }
+
+        public static AppliancePart StainlessSteelIngot => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibStainlessSteelIngot>();
+        public class CraftingLibStainlessSteelIngot : IntermediateIngot
+        {
+            public override string UniqueNameID => "stainlessSteelIngot";
+
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Stainless Steel Ingot",
+                    Description = "Ingot"
+                })
+            };
         }
         #endregion
 
-        public static AppliancePart CraftingLibGlass => GDOUtils.GetCastedGDO<AppliancePart, Glass>();
-        public class Glass : IntermediatePart
+        public static AppliancePart CraftingLibGlass => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGlassBlock>();
+        public class CraftingLibGlassBlock : IntermediatePart
         {
             public override string UniqueNameID => "intermediatePartGlass";
-            public override GameObject Prefab => TestCubeManager.GetPrefab<Glass>(scaleX: 0.2f, scaleY: 0.2f, scaleZ: 0.2f, MaterialUtils.GetExistingMaterial("Door Glass"), collider: false);
-
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Door Glass");
             public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
             {
                 (Locale.English, new BasicInfo()
