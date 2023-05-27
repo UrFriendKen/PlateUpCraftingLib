@@ -1,5 +1,4 @@
-﻿using CraftingLib.GameDataObjects;
-using Kitchen;
+﻿using Kitchen;
 using KitchenData;
 using KitchenMods;
 using Unity.Collections;
@@ -7,17 +6,22 @@ using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
-    [UpdateBefore(typeof(MakePing))]
-    public class ShowPingedPartialApplianceInfo : InteractionSystem, IModSystem
+    [UpdateBefore(typeof(ShowPingedApplianceInfo))]
+    public class ShowPingedAppliancePartStoreInfo : InteractionSystem, IModSystem
     {
-        private CPartialAppliance PartialAppliance;
+        private CAppliancePartStore Store;
+        private CAppliance Appliance;
 
         protected override InteractionType RequiredType => InteractionType.Notify;
         protected override bool AllowAnyMode => true;
 
         protected override bool IsPossible(ref InteractionData data)
         {
-            if (!Require(data.Target, out PartialAppliance))
+            if (!Require(data.Target, out Store))
+            {
+                return false;
+            }
+            if (!Require(data.Target, out Appliance))
             {
                 return false;
             }
@@ -25,7 +29,7 @@ namespace CraftingLib.Systems
             {
                 return false;
             }
-            if (!GameData.Main.TryGet<PartialAppliance>(PartialAppliance.ID, out var output) || output.Name == "")
+            if (!GameData.Main.TryGet<Appliance>(Appliance.ID, out var output) || output.Name == "")
             {
                 return false;
             }
@@ -43,30 +47,19 @@ namespace CraftingLib.Systems
             FixedListInt128 partIDs = new FixedListInt128();
             FixedListInt128 partCount = new FixedListInt128();
 
-            if (data.Context.RequireBuffer(data.Target, out DynamicBuffer<CUsedPart> partBuffer))
+            if (Store.IsInUse)
             {
-                for (int i = 0; i < partBuffer.Length; i++)
-                {
-                    CUsedPart part = partBuffer[i];
-                    int existingIndex = partIDs.IndexOf(part.ID);
-                    if (existingIndex != -1)
-                    {
-                        partCount[existingIndex]++;
-                        continue;
-                    }
-                    partIDs.Add(part.ID);
-                    partCount.Add(1);
-                }
+                partIDs.Add(Store.PartID);
+                partCount.Add(Store.IsInfinite? -1 : Store.Remaining - Store.HeldCount);
             }
 
-            PartialAppliance.IsComplete(data.Context, data.Target, out int recipeIndex);
             // To Do: Find another use for recipe index instead of completed index since ProgressView blocks PartialApplianceInfoView.
             data.Context.Set(data.Target, new CShowApplianceContainerInfo
             {
-                ID = PartialAppliance.ID,
+                ID = Appliance.ID,
                 ShowPrice = showPrice,
                 Price = sale.Price,
-                ResultID = recipeIndex,
+                //ResultID = recipeIndex,
                 PartIDs = partIDs,
                 PartCount = partCount
             });

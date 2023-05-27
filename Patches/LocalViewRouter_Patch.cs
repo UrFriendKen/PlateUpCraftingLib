@@ -91,7 +91,7 @@ namespace CraftingLib.Patches
                 return false;
             }
 
-            if (view_type == Main.PartialApplianceInfoViewType)
+            if (view_type == Main.AppliancePartContainerInfoViewType)
             {
                 if (_partialApplianceInfoPrefab == null)
                 {
@@ -100,7 +100,7 @@ namespace CraftingLib.Patches
                     _partialApplianceInfoPrefab.transform.SetParent(_hiderContainer.transform);
 
 
-                    AttachInfoView<PartialApplianceInfoView, PartialApplianceInfoView.ViewData>(_partialApplianceInfoPrefab);
+                    AttachInfoView<AppliancePartContainerInfoView, AppliancePartContainerInfoView.ViewData>(_partialApplianceInfoPrefab);
                 }
                 __result = _partialApplianceInfoPrefab;
                 return false;

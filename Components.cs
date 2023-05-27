@@ -285,6 +285,13 @@ namespace CraftingLib
 
     public struct CAppliancePartVendor : IApplianceProperty, IComponentData, IAttachableProperty, IAttachmentLogic, IModComponent
     {
+        public enum VendorType
+        {
+            Crate,
+            Part
+        }
+
+        public VendorType Type;
         public int SelectedIndex;
 
         public void Attach(EntityManager em, EntityCommandBuffer ecb, Entity e)
@@ -489,22 +496,22 @@ namespace CraftingLib
 
     public struct CLockDurationNight : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
     public struct CLockDurationDay : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
-    public struct CPartialApplianceInfo : IComponentData, IModComponent
+    public struct CAppliancePartContainerInfo : IComponentData, IModComponent
     {
         public int ID;
         public ApplianceInfoMode Mode;
         public int Price;
-        public int RecipeIndex;
+        public int ResultID;
         public FixedListInt128 PartIDs;
         public FixedListInt128 PartCount;
     }
 
-    public struct CShowPartialApplianceInfo : IComponentData, IModComponent
+    public struct CShowApplianceContainerInfo : IComponentData, IModComponent
     {
         public int ID;
         public int Price;
         public bool ShowPrice;
-        public int RecipeIndex;
+        public int ResultID;
         public FixedListInt128 PartIDs;
         public FixedListInt128 PartCount;
     }

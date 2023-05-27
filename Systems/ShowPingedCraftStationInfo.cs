@@ -7,17 +7,21 @@ using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
-    [UpdateBefore(typeof(MakePing))]
-    public class ShowPingedPartialApplianceInfo : InteractionSystem, IModSystem
+    [UpdateBefore(typeof(ShowPingedApplianceInfo))]
+    public class ShowPingedCraftStationInfo : InteractionSystem, IModSystem
     {
-        private CPartialAppliance PartialAppliance;
+        private CAppliance Appliance;
 
         protected override InteractionType RequiredType => InteractionType.Notify;
         protected override bool AllowAnyMode => true;
 
         protected override bool IsPossible(ref InteractionData data)
         {
-            if (!Require(data.Target, out PartialAppliance))
+            if (!Has<CAppliancePartCraftStation>(data.Target))
+            {
+                return false;
+            }
+            if (!Require(data.Target, out Appliance))
             {
                 return false;
             }
@@ -25,7 +29,7 @@ namespace CraftingLib.Systems
             {
                 return false;
             }
-            if (!GameData.Main.TryGet<PartialAppliance>(PartialAppliance.ID, out var output) || output.Name == "")
+            if (!GameData.Main.TryGet<Appliance>(Appliance.ID, out var output) || output.Name == "")
             {
                 return false;
             }
@@ -59,14 +63,13 @@ namespace CraftingLib.Systems
                 }
             }
 
-            PartialAppliance.IsComplete(data.Context, data.Target, out int recipeIndex);
             // To Do: Find another use for recipe index instead of completed index since ProgressView blocks PartialApplianceInfoView.
             data.Context.Set(data.Target, new CShowApplianceContainerInfo
             {
-                ID = PartialAppliance.ID,
+                ID = Appliance.ID,
                 ShowPrice = showPrice,
                 Price = sale.Price,
-                ResultID = recipeIndex,
+                //ResultID = recipeIndex,
                 PartIDs = partIDs,
                 PartCount = partCount
             });

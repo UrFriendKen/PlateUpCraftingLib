@@ -4,13 +4,13 @@ using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
-    public class ManagePartialApplianceIndicators : IndicatorManager, IModSystem
+    public class ManageAppliancePartContainerIndicators : IndicatorManager, IModSystem
     {
-        protected override ViewType ViewType => Main.PartialApplianceInfoViewType;
+        protected override ViewType ViewType => Main.AppliancePartContainerInfoViewType;
 
         protected override EntityQuery GetSearchQuery()
         {
-            return GetEntityQuery(typeof(CShowPartialApplianceInfo));
+            return GetEntityQuery(typeof(CShowApplianceContainerInfo));
         }
 
         protected override bool ShouldHaveIndicator(Entity candidate)
@@ -50,18 +50,18 @@ namespace CraftingLib.Systems
             {
                 return default;
             }
-            if (!Require(source, out CShowPartialApplianceInfo showInfo))
+            if (!Require(source, out CShowApplianceContainerInfo showInfo))
             {
                 return default;
             }
             Entity entity = base.CreateIndicator(source);
             Set(entity, new CPosition(pos));
-            Set(entity, new CPartialApplianceInfo
+            Set(entity, new CAppliancePartContainerInfo
             {
                 ID = showInfo.ID,
                 Mode = ((!showInfo.ShowPrice) ? CApplianceInfo.ApplianceInfoMode.Garage : CApplianceInfo.ApplianceInfoMode.Shop),
                 Price = showInfo.Price,
-                RecipeIndex = showInfo.RecipeIndex,
+                ResultID = showInfo.ResultID,
                 PartIDs = showInfo.PartIDs,
                 PartCount = showInfo.PartCount
             });

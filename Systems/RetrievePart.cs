@@ -20,6 +20,8 @@ namespace CraftingLib.Systems
                 return false;
             if (!Require(data.Target, out Store) || !Store.IsInUse)
                 return false;
+            if (!Store.IsInfinite && Store.HeldCount >= Store.Remaining)
+                return false;
             if (!GameData.Main.TryGet(Store.PartID, out AppliancePart partGDO, warn_if_fail: true))
                 return false;
             if (partGDO.IsNonRetrievable)

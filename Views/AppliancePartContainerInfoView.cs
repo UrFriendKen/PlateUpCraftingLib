@@ -5,16 +5,13 @@ using KitchenMods;
 using MessagePack;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using TMPro;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 namespace CraftingLib.Views
 {
-    public class PartialApplianceInfoView : InfoView<PartialApplianceInfoView.ViewData>
+    public class AppliancePartContainerInfoView : InfoView<AppliancePartContainerInfoView.ViewData>
     {
         public class UpdateView : IncrementalViewSystemBase<ViewData>, IModSystem
         {
@@ -23,13 +20,13 @@ namespace CraftingLib.Views
             {
                 base.Initialise();
                 Views = GetEntityQuery(new QueryHelper()
-                    .All(typeof(CLinkedView), typeof(CPartialApplianceInfo)));
+                    .All(typeof(CLinkedView), typeof(CAppliancePartContainerInfo)));
             }
 
             protected override void OnUpdate()
             {
                 using NativeArray<CLinkedView> views = Views.ToComponentDataArray<CLinkedView>(Allocator.Temp);
-                using NativeArray<CPartialApplianceInfo> infos = Views.ToComponentDataArray<CPartialApplianceInfo>(Allocator.Temp);
+                using NativeArray<CAppliancePartContainerInfo> infos = Views.ToComponentDataArray<CAppliancePartContainerInfo>(Allocator.Temp);
 
                 int money = 0;
                 if (Require(out SMoney sMoney))
@@ -38,7 +35,7 @@ namespace CraftingLib.Views
                 for (int i = 0; i < views.Length; i++)
                 {
                     CLinkedView view = views[i];
-                    CPartialApplianceInfo info = infos[i];
+                    CAppliancePartContainerInfo info = infos[i];
 
                     Dictionary<int, int> usedParts = new Dictionary<int, int>();
                     for (int j = 0; j < info.PartIDs.Length; j++)
@@ -56,7 +53,7 @@ namespace CraftingLib.Views
                         PlayerMoney = money,
                         Mode = info.Mode,
                         Price = info.Price,
-                        RecipeIndex = info.RecipeIndex, // Currrently unused
+                        ResultID = info.ResultID, // Currrently unused
                         usedParts = usedParts
                     });
                 }
@@ -74,7 +71,7 @@ namespace CraftingLib.Views
 
             [Key(3)] public int Price;
 
-            [Key(4)] public int RecipeIndex;
+            [Key(4)] public int ResultID;
 
             [Key(5)] public Dictionary<int, int> usedParts;
 
@@ -84,7 +81,7 @@ namespace CraftingLib.Views
                     PlayerMoney != check.PlayerMoney ||
                     Mode != check.Mode ||
                     Price != check.Price ||
-                    RecipeIndex != check.RecipeIndex ||
+                    ResultID != check.ResultID ||
                     UsedPartsIsChangedFrom(check);
             }
 
@@ -113,10 +110,10 @@ namespace CraftingLib.Views
 
             UnityEngine.Object.Destroy(Sections);
             Sections = sections;
-            if (!GameData.Main.TryGet(data.ID, out PartialAppliance gdo))
+            if (!GameData.Main.TryGet(data.ID, out Appliance gdo))
             {
                 Title.text = $"Partial Appliance ({data.ID})";
-                Description.text = "Oopsie! PartialAppliance GDO not found.";
+                Description.text = "Oopsie! CraftStation GDO not found.";
                 return;
             }
             float yPos = SectionStartOffset;
@@ -156,13 +153,13 @@ namespace CraftingLib.Views
                     {
                         partName = partGDO.Name;
                     }
-                    partStrings.Add($"{partName} ({part.Value})");
+                    partStrings.Add($"{partName} ({(part.Value < 0 ? "∞" : part.Value)})");
                 }
-                string partsInsertedString = String.Join(", ", partStrings);
+                string partsUsedString = String.Join(", ", partStrings);
                 yPos += AddSection(yPos, new Appliance.Section()
                 {
-                    Title = "Parts Inserted",       // To populate GlobalLocalisation.Text
-                    Description = partsInsertedString
+                    Title = "Parts",       // To populate GlobalLocalisation.Text
+                    Description = partsUsedString
                 });
             }
             else

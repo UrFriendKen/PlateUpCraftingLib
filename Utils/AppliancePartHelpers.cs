@@ -1,19 +1,53 @@
 ﻿using CraftingLib.GameDataObjects;
 using Kitchen;
 using KitchenData;
+using KitchenLib.References;
 using Unity.Entities;
+using UnityEngine;
 
 namespace CraftingLib.Utils
 {
     public static class AppliancePartHelpers
     {
-        public static bool CreateAppliancePart<T>() // Some custom appliance source type
+        public static bool CreateAppiancePartCrate(EntityContext ctx, int appliancePartID, int? remainingOverride = null, int? totalOverride = null, bool isInfinite = false)
         {
-            return false;
+            if (!GameData.Main.TryGet(appliancePartID, out AppliancePart appliancePart, warn_if_fail: true))
+                return false;
+
+            Entity e = ctx.CreateEntity();
+
+            ctx.Set(e, new CCreateAppliance()
+            {
+                ID = ApplianceReferences.Parcel // Use Crate ID
+            });
+            ctx.Set(e, new CPosition()
+            {
+                
+            });
+
+            if (isInfinite)
+            {
+                remainingOverride = 0;
+                totalOverride = 0;
+            }
+            int remaining = remainingOverride ?? appliancePart.PurchaseInCrateCount;
+            ctx.Set(e, new CAppliancePartStore()
+            {
+                PartID = appliancePartID,
+                Remaining = remaining,
+                Total = totalOverride ?? Mathf.Max(remaining, 99),
+                HeldCount = 0
+            });
+            ctx.Set(e, new CAppliancePartSource()
+            {
+                Type = CAppliancePartSource.SourceType.Store
+            });
+
+            return true;
         }
 
         /// <summary>
-        /// Create Appliance Part from Appliance Part Store.
+        /// Create Appliance Part from Appliance Part Source.
         /// </summary>
         /// <param name="ctx">Create new EntityContext, or use existing data.Context if performing in InteractionSystem.</param>
         /// <param name="source">Entity with CAppliancePartSource component.</param>

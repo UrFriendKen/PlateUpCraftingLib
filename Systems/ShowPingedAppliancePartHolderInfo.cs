@@ -7,12 +7,11 @@ using Unity.Entities;
 namespace CraftingLib.Systems
 {
     [UpdateBefore(typeof(ShowPingedApplianceInfo))]
-    public class ShowPingedAppliancePartHolderInfo : InteractionSystem, IModSystem
+    public class ShowPingedAppliancePartHolderInfo : ApplianceInteractionSystem, IModSystem
     {
         CAppliance Appliance;
         AppliancePart Part;
         protected override InteractionType RequiredType => InteractionType.Notify;
-        protected override bool AllowAnyMode => true;
 
         protected override bool IsPossible(ref InteractionData data)
         {

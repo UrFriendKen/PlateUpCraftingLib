@@ -3,7 +3,6 @@ using CraftingLib.GameDataObjects;
 using KitchenData;
 using KitchenLib.Utils;
 using System.Collections.Generic;
-using TestCubes;
 using UnityEngine;
 using static CraftingLibParts.FixedPrefabType;
 
@@ -220,15 +219,15 @@ namespace CraftingLibParts
         }
         #endregion
 
-        #region Shards
-        public abstract class BasicShard : BasicPart, IShard
+        #region Crystals
+        public abstract class BasicCrystal : BasicPart, ICrystal
         {
         }
 
-        public static AppliancePart QuartzShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibQuartzShard>();
-        public class CraftingLibQuartzShard : BasicShard
+        public static AppliancePart QuartzCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibQuartzCrystal>();
+        public class CraftingLibQuartzCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "quartzShard";
+            public override string UniqueNameID => "quartzCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -236,16 +235,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Quartz Shard",
+                    Name = "Rough Quartz",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart AmethystShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAmethystShard>();
-        public class CraftingLibAmethystShard : BasicShard
+        public static AppliancePart AmethystCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAmethystCrystal>();
+        public class CraftingLibAmethystCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "amethystShard";
+            public override string UniqueNameID => "amethystCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -253,16 +252,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Amethyst Shard",
+                    Name = "Rough Amethyst",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart DiamondShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibDiamondShard>();
-        public class CraftingLibDiamondShard : BasicShard
+        public static AppliancePart DiamondCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibDiamondCrystal>();
+        public class CraftingLibDiamondCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "diamondShard";
+            public override string UniqueNameID => "diamondCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -270,16 +269,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Diamond Shard",
+                    Name = "Rough Diamond",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart EmeraldShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibEmeraldShard>();
-        public class CraftingLibEmeraldShard : BasicShard
+        public static AppliancePart EmeraldCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibEmeraldCrystal>();
+        public class CraftingLibEmeraldCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "emeraldShard";
+            public override string UniqueNameID => "emeraldCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -287,16 +286,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Emerald Shard",
+                    Name = "Rough Emerald",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart SapphireShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSapphireShard>();
-        public class CraftingLibSapphireShard : BasicShard
+        public static AppliancePart SapphireCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSapphireCrystal>();
+        public class CraftingLibSapphireCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "sapphireShard";
+            public override string UniqueNameID => "sapphireCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -304,16 +303,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Sapphire Shard",
+                    Name = "Rough Sapphire",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart TopazShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTopazShard>();
-        public class CraftingLibTopazShard : BasicShard
+        public static AppliancePart TopazCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTopazCrystal>();
+        public class CraftingLibTopazCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "topazShard";
+            public override string UniqueNameID => "topazCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -321,16 +320,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Topaz Shard",
+                    Name = "Rough Topaz",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart GarnetShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGarnetShard>();
-        public class CraftingLibGarnetShard : BasicShard
+        public static AppliancePart GarnetCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGarnetCrystal>();
+        public class CraftingLibGarnetCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "garnetShard";
+            public override string UniqueNameID => "garnetCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -338,16 +337,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Garnet Shard",
+                    Name = "Rough Garnet",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart AquamarineShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAquamarineShard>();
-        public class CraftingLibAquamarineShard : BasicShard
+        public static AppliancePart AquamarineCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAquamarineCrystal>();
+        public class CraftingLibAquamarineCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "aquamarineShard";
+            public override string UniqueNameID => "aquamarineCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -355,16 +354,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Aquamarine Shard",
+                    Name = "Rough Aquamarine",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart OpalShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOpalShard>();
-        public class CraftingLibOpalShard : BasicShard
+        public static AppliancePart OpalCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOpalCrystal>();
+        public class CraftingLibOpalCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "opalShard";
+            public override string UniqueNameID => "opalCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -372,16 +371,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Opal Shard",
+                    Name = "Rough Opal",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart PeridotShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPeridotShard>();
-        public class CraftingLibPeridotShard : BasicShard
+        public static AppliancePart PeridotCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPeridotCrystal>();
+        public class CraftingLibPeridotCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "peridotShard";
+            public override string UniqueNameID => "peridotCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -389,16 +388,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Peridot Shard",
+                    Name = "Rough Peridot",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart PyriteShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPyriteShard>();
-        public class CraftingLibPyriteShard : BasicShard
+        public static AppliancePart PyriteCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPyriteCrystal>();
+        public class CraftingLibPyriteCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "pyriteShard";
+            public override string UniqueNameID => "pyriteCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -406,16 +405,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Pyrite Shard",
+                    Name = "Rough Pyrite",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart BerylShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBerylShard>();
-        public class CraftingLibBerylShard : BasicShard
+        public static AppliancePart BerylCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBerylCrystal>();
+        public class CraftingLibBerylCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "berylShard";
+            public override string UniqueNameID => "berylCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -423,16 +422,16 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Beryl Shard",
+                    Name = "Rough Beryl",
                     Description = "Mineral"
                 })
             };
         }
 
-        public static AppliancePart OnyxShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOnyxShard>();
-        public class CraftingLibOnyxShard : BasicShard
+        public static AppliancePart OnyxCrystal => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOnyxCrystal>();
+        public class CraftingLibOnyxCrystal : BasicCrystal
         {
-            public override string UniqueNameID => "onyxShard";
+            public override string UniqueNameID => "onyxCrystal";
             public override int PurchaseCost => 0;
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
 
@@ -440,7 +439,7 @@ namespace CraftingLibParts
             {
                 (Locale.English, new BasicInfo()
                 {
-                    Name = "Onyx Shard",
+                    Name = "Rough Onyx",
                     Description = "Mineral"
                 })
             };
@@ -730,8 +729,13 @@ namespace CraftingLibParts
         }
         #endregion
 
+        #region Blocks
+        public abstract class IntermediateBlock : IntermediatePart, IBlock
+        {
+        }
+
         public static AppliancePart GlassBlock => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGlassBlock>();
-        public class CraftingLibGlassBlock : IntermediatePart, IBlock
+        public class CraftingLibGlassBlock : IntermediateBlock
         {
             public override string UniqueNameID => "intermediatePartGlassBlock";
             public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Door GlassBlock");
@@ -744,5 +748,473 @@ namespace CraftingLibParts
                 })
             };
         }
+        #endregion
+
+        #region Plates
+        public abstract class IntermediatePlate : IntermediatePart, IPlate
+        {
+        }
+        #endregion
+
+        #region Rods
+        public abstract class IntermediateRod : IntermediatePart, IRod
+        {
+        }
+        #endregion
+
+        #region Shards
+        public abstract class IntermediateShard : IntermediatePart, IShard
+        {
+        }
+
+        public static AppliancePart QuartzShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibQuartzShard>();
+        public class CraftingLibQuartzShard : IntermediateShard
+        {
+            public override string UniqueNameID => "quartzShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Quartz Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart AmethystShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAmethystShard>();
+        public class CraftingLibAmethystShard : IntermediateShard
+        {
+            public override string UniqueNameID => "amethystShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Amethyst Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart DiamondShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibDiamondShard>();
+        public class CraftingLibDiamondShard : IntermediateShard
+        {
+            public override string UniqueNameID => "diamondShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Diamond Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart EmeraldShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibEmeraldShard>();
+        public class CraftingLibEmeraldShard : IntermediateShard
+        {
+            public override string UniqueNameID => "emeraldShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Emerald Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart SapphireShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSapphireShard>();
+        public class CraftingLibSapphireShard : IntermediateShard
+        {
+            public override string UniqueNameID => "sapphireShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Sapphire Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart TopazShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTopazShard>();
+        public class CraftingLibTopazShard : IntermediateShard
+        {
+            public override string UniqueNameID => "topazShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Topaz Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart GarnetShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGarnetShard>();
+        public class CraftingLibGarnetShard : IntermediateShard
+        {
+            public override string UniqueNameID => "garnetShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Garnet Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart AquamarineShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAquamarineShard>();
+        public class CraftingLibAquamarineShard : IntermediateShard
+        {
+            public override string UniqueNameID => "aquamarineShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Aquamarine Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart OpalShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOpalShard>();
+        public class CraftingLibOpalShard : IntermediateShard
+        {
+            public override string UniqueNameID => "opalShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Opal Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart PeridotShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPeridotShard>();
+        public class CraftingLibPeridotShard : IntermediateShard
+        {
+            public override string UniqueNameID => "peridotShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Peridot Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart PyriteShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPyriteShard>();
+        public class CraftingLibPyriteShard : IntermediateShard
+        {
+            public override string UniqueNameID => "pyriteShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Pyrite Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart BerylShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBerylShard>();
+        public class CraftingLibBerylShard : IntermediateShard
+        {
+            public override string UniqueNameID => "berylShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Beryl Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart OnyxShard => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOnyxShard>();
+        public class CraftingLibOnyxShard : IntermediateShard
+        {
+            public override string UniqueNameID => "onyxShard";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Onyx Shard",
+                    Description = "Mineral"
+                })
+            };
+        }
+        #endregion
+
+
+        #region Faceted Crystals
+        public abstract class IntermediateFaceted : IntermediatePart, IIngot
+        {
+        }
+
+        public static AppliancePart QuartzFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibQuartzFaceted>();
+        public class CraftingLibQuartzFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "quartzFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Quartz",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart AmethystFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAmethystFaceted>();
+        public class CraftingLibAmethystFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "amethystFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Amethyst",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart DiamondFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibDiamondFaceted>();
+        public class CraftingLibDiamondFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "diamondFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Diamond",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart EmeraldFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibEmeraldFaceted>();
+        public class CraftingLibEmeraldFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "emeraldFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Emerald",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart SapphireFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibSapphireFaceted>();
+        public class CraftingLibSapphireFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "sapphireFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Sapphire",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart TopazFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibTopazFaceted>();
+        public class CraftingLibTopazFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "topazFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Topaz",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart GarnetFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibGarnetFaceted>();
+        public class CraftingLibGarnetFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "garnetFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Garnet",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart AquamarineFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibAquamarineFaceted>();
+        public class CraftingLibAquamarineFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "aquamarineFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Aquamarine",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart OpalFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOpalFaceted>();
+        public class CraftingLibOpalFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "opalFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Opal",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart PeridotFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPeridotFaceted>();
+        public class CraftingLibPeridotFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "peridotFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Peridot",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart PyriteFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibPyriteFaceted>();
+        public class CraftingLibPyriteFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "pyriteFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Pyrite",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart BerylFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibBerylFaceted>();
+        public class CraftingLibBerylFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "berylFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Beryl",
+                    Description = "Mineral"
+                })
+            };
+        }
+
+        public static AppliancePart OnyxFaceted => GDOUtils.GetCastedGDO<AppliancePart, CraftingLibOnyxFaceted>();
+        public class CraftingLibOnyxFaceted : IntermediateFaceted
+        {
+            public override string UniqueNameID => "onyxFaceted";
+            public override int PurchaseCost => 0;
+            public override Material PrefabMaterial => MaterialUtils.GetExistingMaterial("Metal");
+
+            public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>
+            {
+                (Locale.English, new BasicInfo()
+                {
+                    Name = "Faceted Onyx",
+                    Description = "Mineral"
+                })
+            };
+        }
+        #endregion
     }
 }

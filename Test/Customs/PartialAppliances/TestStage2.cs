@@ -21,7 +21,7 @@ namespace KitchenCraftingLibTest.Customs.PartialAppliances
 
         public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
         {
-            new CSpecialPartialAppliance()
+            new CSpecialAppliancePartHolder()
             {
                 SpecialDeposit = true
             }

@@ -41,6 +41,8 @@ namespace CraftingLib.Customs
 
         public virtual int PurchaseCost { get; protected set; }
 
+        public virtual int PurchaseInCrateCount { get; protected set; } = 1;
+
         public virtual bool IsPurchasable { get; protected set; }
 
         public virtual void SetupPrefab(GameObject prefab)
@@ -77,6 +79,12 @@ namespace CraftingLib.Customs
             if (appliancePart.PurchaseCost != PurchaseCost)
             {
                 appliancePart.PurchaseCost = PurchaseCost;
+            }
+            if (PurchaseInCrateCount < 1)
+                PurchaseInCrateCount = 1;
+            if (appliancePart.PurchaseInCrateCount != PurchaseInCrateCount)
+            {
+                appliancePart.PurchaseInCrateCount = PurchaseInCrateCount;
             }
             if (appliancePart.IsPurchasable != IsPurchasable)
             {

@@ -1,5 +1,6 @@
 ﻿using CraftingLib.Utils;
 using Kitchen;
+using KitchenData;
 using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
@@ -49,9 +50,26 @@ namespace CraftingLib.Systems
                     Entity interactor = actors[i].Interactor;
                     if (actors[i].IsTransferOnly || !Require(interactor, out CItemHolder holder) || holder.HeldItem != default)
                         continue;
-                    AppliancePartHelpers.CreateAppliancePart(ctx, entity, CAppliancePartSource.SourceType.Vendor, interactor, out Entity _);
-                    player_money.Amount -= cost;
-                    Set(player_money);
+
+                    bool success = false;
+                    switch (vendor.Type)
+                    {
+                        case CAppliancePartVendor.VendorType.Part:
+                            success = AppliancePartHelpers.CreateAppliancePart(ctx, entity, CAppliancePartSource.SourceType.Vendor, interactor, out Entity _);
+                            break;
+                        case CAppliancePartVendor.VendorType.Crate:
+                            success = AppliancePartHelpers.CreateAppiancePartCrate(ctx, selectedOption.ID);
+                            break;
+                        default:
+                            success = false;
+                            break;
+                    }
+
+                    if (success)
+                    {
+                        player_money.Amount -= cost;
+                        Set(player_money);
+                    }
                     break;
                 }
             }

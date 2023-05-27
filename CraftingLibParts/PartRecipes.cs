@@ -15,13 +15,13 @@ namespace CraftingLibParts
 
     public static class SmelterRecipes
     {
-        public abstract class SmelterRecipe : CustomAppliancePartRecipe
+        public abstract class BaseSmelterRecipe : CustomAppliancePartRecipe
         {
             //public override HashSet<Appliance> PossibleAppliances => // Smelter Appliance, TBC
             public override sealed bool AllowCraftingDesk => true; // Set to false when smelter appliance implemented
         }
         #region Nugget To Ingot
-        public abstract class BaseNuggetToIngot<TNugget, TIngot> : SmelterRecipe
+        public abstract class BaseNuggetToIngot<TNugget, TIngot> : BaseSmelterRecipe
             where TNugget : CustomAppliancePart, INugget
             where TIngot : CustomAppliancePart, IIngot
         {
@@ -70,7 +70,7 @@ namespace CraftingLibParts
         }
         #endregion
 
-        public class SandToGlass : SmelterRecipe
+        public class SandToGlass : BaseSmelterRecipe
         {
             public override string UniqueNameID => "sandToGlass";
             public override Dictionary<AppliancePart, int> Inputs => new Dictionary<AppliancePart, int>()
@@ -81,7 +81,7 @@ namespace CraftingLibParts
         }
 
         #region Nugget To Ingot Alloying
-        public abstract class TwoPartAlloying<TPart1, TPart2, TResult> : SmelterRecipe
+        public abstract class TwoPartAlloying<TPart1, TPart2, TResult> : BaseSmelterRecipe
             where TPart1 : CustomAppliancePart
             where TPart2 : CustomAppliancePart
             where TResult : CustomAppliancePart
@@ -95,7 +95,7 @@ namespace CraftingLibParts
             };
             public override sealed AppliancePart Result => GDOUtils.GetCastedGDO<AppliancePart, TResult>();
         }
-        public abstract class ThreePartAlloying<TPart1, TPart2, TPart3, TResult> : SmelterRecipe
+        public abstract class ThreePartAlloying<TPart1, TPart2, TPart3, TResult> : BaseSmelterRecipe
             where TPart1 : CustomAppliancePart
             where TPart2 : CustomAppliancePart
             where TPart3 : CustomAppliancePart
@@ -132,6 +132,82 @@ namespace CraftingLibParts
         {
             public override string UniqueNameID => "stainlessSteelAlloying";
         }
+        #endregion
+    }
+
+    public static class CrusherRecipes
+    {
+        public abstract class BaseCrusherRecipe : CustomAppliancePartRecipe
+        {
+            //public override HashSet<Appliance> PossibleAppliances => // Crusher Appliance, TBC
+            public override sealed bool AllowCraftingDesk => true; // Set to false when crusher appliance implemented
+        }
+
+        #region Crystal to Shard
+        public abstract class BaseCrystalToShard<TCrystal, TShard> : BaseCrusherRecipe
+            where TCrystal : CustomAppliancePart, ICrystal
+            where TShard : CustomAppliancePart, IShard
+        {
+            public virtual int CrystalQuantity { get; protected set; } = 1;
+            public override sealed Dictionary<AppliancePart, int> Inputs => new Dictionary<AppliancePart, int>
+            {
+                { GDOUtils.GetCastedGDO<AppliancePart, TCrystal>(), CrystalQuantity }
+            };
+            public override sealed AppliancePart Result => GDOUtils.GetCastedGDO<AppliancePart, TShard>();
+        }
+        public class QuartzCrystalToShard : BaseCrystalToShard<CraftingLibQuartzCrystal, CraftingLibQuartzShard>
+        {
+            public override string UniqueNameID => "quartzCrystalToShard";
+        }
+        public class AmethystCrystalToShard : BaseCrystalToShard<CraftingLibAmethystCrystal, CraftingLibAmethystShard>
+        {
+            public override string UniqueNameID => "amethystCrystalToShard";
+        }
+        public class DiamondCrystalToShard : BaseCrystalToShard<CraftingLibDiamondCrystal, CraftingLibDiamondShard>
+        {
+            public override string UniqueNameID => "diamondCrystalToShard";
+        }
+        public class EmeraldCrystalToShard : BaseCrystalToShard<CraftingLibEmeraldCrystal, CraftingLibEmeraldShard>
+        {
+            public override string UniqueNameID => "emeraldCrystalToShard";
+        }
+        public class SapphireCrystalToShard : BaseCrystalToShard<CraftingLibSapphireCrystal, CraftingLibSapphireShard>
+        {
+            public override string UniqueNameID => "sapphireCrystalToShard";
+        }
+        public class TopazCrystalToShard : BaseCrystalToShard<CraftingLibTopazCrystal, CraftingLibTopazShard>
+        {
+            public override string UniqueNameID => "topazCrystalToShard";
+        }
+        public class GarnetCrystalToShard : BaseCrystalToShard<CraftingLibGarnetCrystal, CraftingLibGarnetShard>
+        {
+            public override string UniqueNameID => "garnetCrystalToShard";
+        }
+        public class AquamarineCrystalToShard : BaseCrystalToShard<CraftingLibAquamarineCrystal, CraftingLibAquamarineShard>
+        {
+            public override string UniqueNameID => "aquamarineCrystalToShard";
+        }
+        public class OpalCrystalToShard : BaseCrystalToShard<CraftingLibOpalCrystal, CraftingLibOpalShard>
+        {
+            public override string UniqueNameID => "opalCrystalToShard";
+        }
+        public class PeridotCrystalToShard : BaseCrystalToShard<CraftingLibPeridotCrystal, CraftingLibPeridotShard>
+        {
+            public override string UniqueNameID => "peridotCrystalToShard";
+        }
+        public class PyriteCrystalToShard : BaseCrystalToShard<CraftingLibPyriteCrystal, CraftingLibPyriteShard>
+        {
+            public override string UniqueNameID => "pyriteCrystalToShard";
+        }
+        public class BerylCrystalToShard : BaseCrystalToShard<CraftingLibBerylCrystal, CraftingLibBerylShard>
+        {
+            public override string UniqueNameID => "berylCrystalToShard";
+        }
+        public class OnyxCrystalToShard : BaseCrystalToShard<CraftingLibOnyxCrystal, CraftingLibOnyxShard>
+        {
+            public override string UniqueNameID => "onyxCrystalToShard";
+        }
+
         #endregion
     }
 }

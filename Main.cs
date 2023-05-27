@@ -31,7 +31,7 @@ namespace CraftingLib
 
         public static AssetBundle Bundle;
 
-        public static readonly ViewType PartialApplianceInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:PartialApplianceInfo");
+        public static readonly ViewType AppliancePartContainerInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:PartialApplianceInfo");
         public static readonly ViewType AppliancePartInfoViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:AppliancePartInfo");
         public static readonly ViewType AppliancePartViewType = (ViewType)VariousUtils.GetID($"{MOD_GUID}:AppliancePart");
 

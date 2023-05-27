@@ -48,19 +48,19 @@ namespace CraftingLibParts
             AddGameDataObject<BasicParts.CraftingLibGoldNugget>();
             AddGameDataObject<BasicParts.CraftingLibCarbon>();
 
-            AddGameDataObject<BasicParts.CraftingLibQuartzShard>();
-            AddGameDataObject<BasicParts.CraftingLibAmethystShard>();
-            AddGameDataObject<BasicParts.CraftingLibDiamondShard>();
-            AddGameDataObject<BasicParts.CraftingLibEmeraldShard>();
-            AddGameDataObject<BasicParts.CraftingLibSapphireShard>();
-            AddGameDataObject<BasicParts.CraftingLibTopazShard>();
-            AddGameDataObject<BasicParts.CraftingLibGarnetShard>();
-            AddGameDataObject<BasicParts.CraftingLibAquamarineShard>();
-            AddGameDataObject<BasicParts.CraftingLibOpalShard>();
-            AddGameDataObject<BasicParts.CraftingLibPeridotShard>();
-            AddGameDataObject<BasicParts.CraftingLibPyriteShard>();
-            AddGameDataObject<BasicParts.CraftingLibBerylShard>();
-            AddGameDataObject<BasicParts.CraftingLibOnyxShard>();
+            AddGameDataObject<BasicParts.CraftingLibQuartzCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibAmethystCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibDiamondCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibEmeraldCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibSapphireCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibTopazCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibGarnetCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibAquamarineCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibOpalCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibPeridotCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibPyriteCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibBerylCrystal>();
+            AddGameDataObject<BasicParts.CraftingLibOnyxCrystal>();
 
             AddGameDataObject<BasicParts.CraftingLibSand>();
 
@@ -82,12 +82,39 @@ namespace CraftingLibParts
             AddGameDataObject<IntermediateParts.CraftingLibHighCarbonSteelIngot>();
             AddGameDataObject<IntermediateParts.CraftingLibStainlessSteelIngot>();
 
+            AddGameDataObject<IntermediateParts.CraftingLibQuartzShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibAmethystShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibDiamondShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibEmeraldShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibSapphireShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibTopazShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibGarnetShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibAquamarineShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibOpalShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibPeridotShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibPyriteShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibBerylShard>();
+            AddGameDataObject<IntermediateParts.CraftingLibOnyxShard>();
+
+            AddGameDataObject<IntermediateParts.CraftingLibQuartzFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibAmethystFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibDiamondFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibEmeraldFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibSapphireFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibTopazFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibGarnetFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibAquamarineFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibOpalFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibPeridotFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibPyriteFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibBerylFaceted>();
+            AddGameDataObject<IntermediateParts.CraftingLibOnyxFaceted>();
+
             AddGameDataObject<IntermediateParts.CraftingLibGlassBlock>();
 
 
 
             // Smelter Recipes
-            AddGameDataObject<SmelterRecipes.AluminumNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.AluminumNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.TitaniumNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.ChromiumNuggetToIngot>();
@@ -104,6 +131,23 @@ namespace CraftingLibParts
             AddGameDataObject<SmelterRecipes.BronzeAlloying>();
             AddGameDataObject<SmelterRecipes.HighCarbonSteelAlloying>();
             AddGameDataObject<SmelterRecipes.StainlessSteelAlloying>();
+
+
+            // Crusher Recipes
+            AddGameDataObject<CrusherRecipes.QuartzCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.AmethystCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.DiamondCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.EmeraldCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.SapphireCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.TopazCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.GarnetCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.AquamarineCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.OpalCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.PeridotCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.PyriteCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.BerylCrystalToShard>();
+            AddGameDataObject<CrusherRecipes.OnyxCrystalToShard>();
+
 
             LogInfo("Done loading game data.");
         }
