@@ -27,7 +27,7 @@ namespace CraftingLib.Systems
                 return false;
             if (PartStore.IsFull)
                 return false;
-            if (PartStore.IsInUse && PartStore.PartID != Part.ID)
+            if (PartStore.PartID != Part.ID && (PartStore.IsInUse || !Has<CDynamicAppliancePartStore>()))
                 return false;
             return true;
         }

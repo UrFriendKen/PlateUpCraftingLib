@@ -164,7 +164,7 @@ namespace CraftingLib.Views
             }
             else
             {
-                string usedPartsTag = "No Parts Inserted";     // To populate GlobalLocalisation.Text
+                string usedPartsTag = "No Parts";     // To populate GlobalLocalisation.Text
                 yPos += AddTag(yPos, usedPartsTag);
             }
             if (gdo.HasUpgrades)

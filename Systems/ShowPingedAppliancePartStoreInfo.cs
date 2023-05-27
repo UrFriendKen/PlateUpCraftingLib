@@ -47,7 +47,7 @@ namespace CraftingLib.Systems
             FixedListInt128 partIDs = new FixedListInt128();
             FixedListInt128 partCount = new FixedListInt128();
 
-            if (Store.IsInUse)
+            if (Store.IsInUse || !Has<CDynamicAppliancePartStore>(data.Target))
             {
                 partIDs.Add(Store.PartID);
                 partCount.Add(Store.IsInfinite? -1 : Store.Remaining - Store.HeldCount);

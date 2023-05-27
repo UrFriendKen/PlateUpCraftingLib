@@ -18,7 +18,7 @@ namespace CraftingLib.Utils
 
             ctx.Set(e, new CCreateAppliance()
             {
-                ID = ApplianceReferences.Parcel // Use Crate ID
+                ID = ApplianceReferences.SourcePotato // Use Crate ID
             });
             ctx.Set(e, new CPosition()
             {

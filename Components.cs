@@ -265,6 +265,7 @@ namespace CraftingLib
             }
         }
     }
+    public struct CDynamicAppliancePartStore : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
     public struct CDestroyWhenDepleted : IApplianceProperty, IComponentData, IAttachableProperty, IModComponent { }
 
     /// <summary>
