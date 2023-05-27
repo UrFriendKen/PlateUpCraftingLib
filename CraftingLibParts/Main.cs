@@ -35,6 +35,7 @@ namespace CraftingLibParts
         {
             LogInfo("Attempting to register game data...");
 
+            // Basic Parts
             AddGameDataObject<BasicParts.CraftingLibAluminumNugget>();
             AddGameDataObject<BasicParts.CraftingLibTitaniumNugget>();
             AddGameDataObject<BasicParts.CraftingLibChromiumNugget>();
@@ -47,6 +48,25 @@ namespace CraftingLibParts
             AddGameDataObject<BasicParts.CraftingLibGoldNugget>();
             AddGameDataObject<BasicParts.CraftingLibCarbon>();
 
+            AddGameDataObject<BasicParts.CraftingLibQuartzShard>();
+            AddGameDataObject<BasicParts.CraftingLibAmethystShard>();
+            AddGameDataObject<BasicParts.CraftingLibDiamondShard>();
+            AddGameDataObject<BasicParts.CraftingLibEmeraldShard>();
+            AddGameDataObject<BasicParts.CraftingLibSapphireShard>();
+            AddGameDataObject<BasicParts.CraftingLibTopazShard>();
+            AddGameDataObject<BasicParts.CraftingLibGarnetShard>();
+            AddGameDataObject<BasicParts.CraftingLibAquamarineShard>();
+            AddGameDataObject<BasicParts.CraftingLibOpalShard>();
+            AddGameDataObject<BasicParts.CraftingLibPeridotShard>();
+            AddGameDataObject<BasicParts.CraftingLibPyriteShard>();
+            AddGameDataObject<BasicParts.CraftingLibBerylShard>();
+            AddGameDataObject<BasicParts.CraftingLibOnyxShard>();
+
+            AddGameDataObject<BasicParts.CraftingLibSand>();
+
+
+
+            // Intermediate Parts
             AddGameDataObject<IntermediateParts.CraftingLibAluminumIngot>();
             AddGameDataObject<IntermediateParts.CraftingLibTitaniumIngot>();
             AddGameDataObject<IntermediateParts.CraftingLibChromiumIngot>();
@@ -62,8 +82,11 @@ namespace CraftingLibParts
             AddGameDataObject<IntermediateParts.CraftingLibHighCarbonSteelIngot>();
             AddGameDataObject<IntermediateParts.CraftingLibStainlessSteelIngot>();
 
+            AddGameDataObject<IntermediateParts.CraftingLibGlassBlock>();
 
 
+
+            // Smelter Recipes
             AddGameDataObject<SmelterRecipes.AluminumNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.AluminumNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.TitaniumNuggetToIngot>();
@@ -74,6 +97,8 @@ namespace CraftingLibParts
             AddGameDataObject<SmelterRecipes.ZincNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.SilverNuggetToIngot>();
             AddGameDataObject<SmelterRecipes.GoldNuggetToIngot>();
+
+            AddGameDataObject<SmelterRecipes.SandToGlass>();
 
             AddGameDataObject<SmelterRecipes.BrassAlloying>();
             AddGameDataObject<SmelterRecipes.BronzeAlloying>();

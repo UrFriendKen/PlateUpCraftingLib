@@ -35,7 +35,7 @@ namespace CraftingLib.Systems
                 options.Clear();
                 foreach (AppliancePart appliancePart in parts)
                 {
-                    if (appliancePart.IsPurchasable) // To add check for requirements (Possible attachment points/partial appliances exist?)
+                    if (appliancePart.IsPurchasable) // To add check for requirements (Possible attachment points/partial appliances exist?) Exclude those not included in recipes
                     {
                         options.Add(new CVendorOption()
                         {

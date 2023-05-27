@@ -14,7 +14,7 @@ namespace CraftingLib.Systems
             base.Initialise();
             Infos = GetEntityQuery(new QueryHelper()
                 .All(typeof(CTemporaryApplianceInfo))
-                .Any(typeof(CShowPartialApplianceInfo), typeof(CShowAppliancePartVendorInfo)));
+                .Any(typeof(CShowPartialApplianceInfo), typeof(CShowAppliancePartInfo)));
         }
 
         protected override void OnUpdate()
@@ -41,8 +41,8 @@ namespace CraftingLib.Systems
                     EntityManager.RemoveComponent<CTemporaryApplianceInfo>(entity);
                     if (Has<CShowPartialApplianceInfo>(entity))
                         EntityManager.RemoveComponent<CShowPartialApplianceInfo>(entity);
-                    if (Has<CShowAppliancePartVendorInfo>(entity))
-                        EntityManager.RemoveComponent<CShowAppliancePartVendorInfo>(entity);
+                    if (Has<CShowAppliancePartInfo>(entity))
+                        EntityManager.RemoveComponent<CShowAppliancePartInfo>(entity);
                 }
                 else
                 {

@@ -92,7 +92,7 @@ namespace CraftingLib
             }
         }
     }
-    public struct CShowAppliancePartVendorInfo : IComponentData, IModComponent
+    public struct CShowAppliancePartInfo : IComponentData, IModComponent
     {
         public int ApplianceID;
         public int PartID;
@@ -100,7 +100,7 @@ namespace CraftingLib
         public bool ShowPrice;
     }
 
-    public struct CAppliancePartVendorInfo : IComponentData
+    public struct CAppliancePartInfo : IComponentData
     {
         public int ID;
         public ApplianceInfoMode Mode;

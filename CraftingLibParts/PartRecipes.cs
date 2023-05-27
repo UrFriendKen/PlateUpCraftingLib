@@ -1,6 +1,5 @@
 ﻿using CraftingLib.Customs;
 using CraftingLib.GameDataObjects;
-using KitchenData;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using static CraftingLibParts.BasicParts;
@@ -70,6 +69,16 @@ namespace CraftingLibParts
             public override string UniqueNameID => "goldNuggetToIngot";
         }
         #endregion
+
+        public class SandToGlass : SmelterRecipe
+        {
+            public override string UniqueNameID => "sandToGlass";
+            public override Dictionary<AppliancePart, int> Inputs => new Dictionary<AppliancePart, int>()
+            {
+                { Sand, 3 }
+            };
+            public override AppliancePart Result => GlassBlock;
+        }
 
         #region Nugget To Ingot Alloying
         public abstract class TwoPartAlloying<TPart1, TPart2, TResult> : SmelterRecipe

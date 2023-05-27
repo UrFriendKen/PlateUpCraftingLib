@@ -1,7 +1,6 @@
 ﻿using KitchenLib.Utils;
 using System;
 using System.Collections.Generic;
-using Unity.Entities;
 using UnityEngine;
 using static CraftingLibParts.FixedPrefabType;
 
@@ -228,6 +227,7 @@ namespace CraftingLibParts
             if (!_prefabs.TryGetValue(T, out BasePrefab basePrefab))
             {
                 basePrefab = GetNewPrefabInstance(T);
+                Main.LogInfo($"{T}: {basePrefab}");
                 basePrefab.SetParent(_prefabHider.transform);
                 basePrefab.Scale = new Vector3(scaleX, scaleY, scaleZ);
                 if (material == null)

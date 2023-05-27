@@ -20,13 +20,13 @@ namespace CraftingLib.Views
             {
                 base.Initialise();
                 Views = GetEntityQuery(new QueryHelper()
-                    .All(typeof(CLinkedView), typeof(CAppliancePartVendorInfo)));
+                    .All(typeof(CLinkedView), typeof(CAppliancePartInfo)));
             }
 
             protected override void OnUpdate()
             {
                 using NativeArray<CLinkedView> views = Views.ToComponentDataArray<CLinkedView>(Allocator.Temp);
-                using NativeArray<CAppliancePartVendorInfo> infos = Views.ToComponentDataArray<CAppliancePartVendorInfo>(Allocator.Temp);
+                using NativeArray<CAppliancePartInfo> infos = Views.ToComponentDataArray<CAppliancePartInfo>(Allocator.Temp);
 
                 int money = 0;
                 if (Require(out SMoney sMoney))
@@ -35,7 +35,7 @@ namespace CraftingLib.Views
                 for (int i = 0; i < views.Length; i++)
                 {
                     CLinkedView view = views[i];
-                    CAppliancePartVendorInfo info = infos[i];
+                    CAppliancePartInfo info = infos[i];
 
                     SendUpdate(view, new ViewData()
                     {

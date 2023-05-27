@@ -1,11 +1,10 @@
 ﻿using Kitchen;
 using KitchenMods;
-using System.Security.Permissions;
 using Unity.Entities;
 
 namespace CraftingLib.Systems
 {
-    public class ManageVendorIndicators : IndicatorManager, IModSystem
+    public class ManageAppliancePartIndicators : IndicatorManager, IModSystem
     {
         private bool ShowAppliance;
 
@@ -13,7 +12,7 @@ namespace CraftingLib.Systems
 
         protected override EntityQuery GetSearchQuery()
         {
-            return GetEntityQuery(typeof(CShowAppliancePartVendorInfo));
+            return GetEntityQuery(typeof(CShowAppliancePartInfo));
         }
 
         protected override bool ShouldHaveIndicator(Entity candidate)
@@ -53,7 +52,7 @@ namespace CraftingLib.Systems
             {
                 return default;
             }
-            if (!Require(source, out CShowAppliancePartVendorInfo showInfo))
+            if (!Require(source, out CShowAppliancePartInfo showInfo))
             {
                 return default;
             }
@@ -62,7 +61,7 @@ namespace CraftingLib.Systems
             ShowAppliance = Has<CVendorLocked>(source);
             if (!ShowAppliance)
             {
-                Set(entity, new CAppliancePartVendorInfo
+                Set(entity, new CAppliancePartInfo
                 {
                     ID = showInfo.PartID,
                     Mode = ((!showInfo.ShowPrice) ? CApplianceInfo.ApplianceInfoMode.Garage : CApplianceInfo.ApplianceInfoMode.Shop),

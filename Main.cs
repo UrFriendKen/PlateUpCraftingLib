@@ -2,6 +2,7 @@
 using CraftingLib.Customs.VendingMachine;
 using CraftingLib.GameDataObjects;
 using Kitchen;
+using KitchenData;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenLib.Utils;
@@ -39,6 +40,17 @@ namespace CraftingLib
             { "PARTIAL_APPLIANCE_COMPLETABLE", "Recipe Completed" }
         };
 
+        internal static StartDayWarning AppliancePartWarning = (StartDayWarning)VariousUtils.GetID("AppliancePartWarning");
+        public static readonly Dictionary<StartDayWarning, GenericLocalisationStruct> StartDayWarningLocalisationTexts = new Dictionary<StartDayWarning, GenericLocalisationStruct>()
+        {
+            { AppliancePartWarning, new GenericLocalisationStruct()
+                {
+                    Name = "Unused appliance parts",
+                    Description = "Use or dispose appliance parts before starting the day"
+                }
+            }
+        };
+
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
 
         protected override void OnInitialise()
@@ -64,6 +76,7 @@ namespace CraftingLib
             AddGameDataObject<CraftingDeskRecipeGroup>();
 
             // Perform actions when game data is built
+
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
                 Dictionary<string, string> baseGameTexts = args.gamedata.GlobalLocalisation.Text;
@@ -72,6 +85,15 @@ namespace CraftingLib
                     if (baseGameTexts.ContainsKey(text.Key))
                         continue;
                     baseGameTexts.Add(text.Key, text.Value);
+                }
+
+
+                Dictionary<StartDayWarning, GenericLocalisationStruct> startDayWarningTexts = args.gamedata.GlobalLocalisation.StartDayWarningLocalisation.Text;
+                foreach (KeyValuePair<StartDayWarning, GenericLocalisationStruct> text in StartDayWarningLocalisationTexts)
+                {
+                    if (startDayWarningTexts.ContainsKey(text.Key))
+                        continue;
+                    startDayWarningTexts.Add(text.Key, text.Value);
                 }
 
                 AppliancePartRecipeGroup craftingDeskRecipeGroup = GDOUtils.GetCustomGameDataObject<CraftingDeskRecipeGroup>().GameDataObject as AppliancePartRecipeGroup;

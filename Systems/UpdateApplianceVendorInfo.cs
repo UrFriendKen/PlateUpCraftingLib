@@ -12,14 +12,14 @@ namespace CraftingLib.Systems
         {
             base.Initialise();
             Infos = GetEntityQuery(new QueryHelper()
-                .All(typeof(CAppliancePartVendor), typeof(CVendorOption), typeof(CShowAppliancePartVendorInfo)));
+                .All(typeof(CAppliancePartVendor), typeof(CVendorOption), typeof(CShowAppliancePartInfo)));
         }
 
         protected override void OnUpdate()
         {
             using NativeArray<Entity> entities = Infos.ToEntityArray(Allocator.Temp);
             using NativeArray<CAppliancePartVendor> vendors = Infos.ToComponentDataArray<CAppliancePartVendor>(Allocator.Temp);
-            using NativeArray<CShowAppliancePartVendorInfo> infos = Infos.ToComponentDataArray<CShowAppliancePartVendorInfo>(Allocator.Temp);
+            using NativeArray<CShowAppliancePartInfo> infos = Infos.ToComponentDataArray<CShowAppliancePartInfo>(Allocator.Temp);
 
             for (int i = 0; i < entities.Length; i++)
             {
@@ -29,7 +29,7 @@ namespace CraftingLib.Systems
                     continue;
 
                 CAppliancePartVendor vendor = vendors[i];
-                CShowAppliancePartVendorInfo info = infos[i];
+                CShowAppliancePartInfo info = infos[i];
 
                 if (!RequireBuffer(entity, out DynamicBuffer<CVendorOption> optionsBuffer))
                     continue;

@@ -16,5 +16,17 @@ namespace CraftingLib.Systems
         {
             return _instance?.Has<T>(entity) ?? false;
         }
+
+        public static bool StaticTryGetEntityQuery(QueryHelper queryHelper, out EntityQuery entityQuery)
+        {
+            EntityQuery? tempQuery = _instance?.GetEntityQuery(queryHelper);
+            if (!tempQuery.HasValue)
+            {
+                entityQuery = default;
+                return false;
+            }
+            entityQuery = tempQuery.Value;
+            return true;
+        }
     }
 }

@@ -7,7 +7,7 @@ using Unity.Entities;
 namespace CraftingLib.Systems
 {
     [UpdateBefore(typeof(ShowPingedApplianceInfo))]
-    public class ShowPingedAppliancePartVendorInfo : InteractionSystem, IModSystem
+    public class ShowPingedAppliancePartHolderInfo : InteractionSystem, IModSystem
     {
         CAppliance Appliance;
         AppliancePart Part;
@@ -16,18 +16,15 @@ namespace CraftingLib.Systems
 
         protected override bool IsPossible(ref InteractionData data)
         {
-            if (!Require(data.Target, out CAppliancePartVendor vendor))
+            if (!Require(data.Target, out CItemHolder holder) || holder.HeldItem == default)
                 return false;
             if (!Require(data.Target, out Appliance))
                 return false;
             if (Has<CShowAppliancePartInfo>(data.Target))
                 return false;
-            if (!RequireBuffer(data.Target, out DynamicBuffer<CVendorOption> optionsBuffer)) 
+            if (!Require(holder.HeldItem, out CAppliancePart cAppliancePart))
                 return false;
-            if (vendor.SelectedIndex < 0 || vendor.SelectedIndex > optionsBuffer.Length - 1)
-                return false;
-            CVendorOption vendorOption = optionsBuffer[vendor.SelectedIndex];
-            if (!GameData.Main.TryGet(vendorOption.ID, out Part) || Part.Name == "")
+            if (!GameData.Main.TryGet(cAppliancePart.ID, out Part) || Part.Name == "")
                 return false;
             return true;
         }
@@ -42,7 +39,7 @@ namespace CraftingLib.Systems
             {
                 ApplianceID = Appliance.ID,
                 PartID = Part.ID,
-                ShowPrice = true,
+                ShowPrice = false,
                 Price = Part.PurchaseCost
             });
         }
